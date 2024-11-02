@@ -1,11 +1,13 @@
 import React, {useState} from 'react'
 import closeIcon from "/close-large-fill.svg"
+import toast from 'react-hot-toast'
 
 const SignInForm = ({setIsOpenSignInModal}) => {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
     })
+    const [isLoading, setIsLoading] = useState(false)
 
     const handleCloseIconClick = () => {
         setIsOpenSignInModal(false)
@@ -21,7 +23,27 @@ const SignInForm = ({setIsOpenSignInModal}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(formData);
+        try{
+            setIsLoading(true)
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/signin`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(formData)
+            })
+
+            if(response.ok){
+                setIsOpenSignInModal(false)
+                toast.success("Logged in successfully!")
+            }
+        }catch(err){
+            console.log(err.message);
+            toast.error(err.message);
+        }finally{
+            setIsLoading(false)
+        }
     }
 
   return (
@@ -52,7 +74,7 @@ const SignInForm = ({setIsOpenSignInModal}) => {
                     className='border border-black rounded-md p-2 shadow-[-5px_5px_0px_#000000] outline-none' 
                 />
             </div>
-            <button className='px-4 py-2 mt-2 hover:bg-[#1E201E] hover:text-white rounded-md border border-black shadow-[-5px_5px_0px_#000000] font-semibold'>Sign in</button>
+            <button className='px-4 py-2 mt-2 hover:bg-[#1E201E] hover:text-white rounded-md border border-black shadow-[-5px_5px_0px_#000000] font-semibold'>{isLoading ? "Signing In..." : "Sign In"}</button>
         </form>
     </div>
   )

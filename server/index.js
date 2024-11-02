@@ -7,6 +7,7 @@ import { fileURLToPath } from "url";
 import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -15,7 +16,13 @@ const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+app.use(cookieParser());
 
 // Serve static files from the uploads directory
 const __filename = fileURLToPath(import.meta.url);
