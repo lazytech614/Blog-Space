@@ -5,6 +5,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import blogRoutes from "./routes/blogRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -27,6 +28,9 @@ app.get("/", (req, res) => {
 
 // Blog routes
 app.use("/api/blogs", blogRoutes);
+
+// User routes
+app.use("/api/user", userRoutes);
 
 // Start the server
 app.listen(port, () =>
