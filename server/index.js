@@ -6,6 +6,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
@@ -25,6 +26,9 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.get("/", (req, res) => {
   res.send("Hello from server!");
 });
+
+// Auth routes
+app.use("/api/auth", authRoutes);
 
 // Blog routes
 app.use("/api/blogs", blogRoutes);
