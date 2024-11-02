@@ -9,9 +9,8 @@ import {Toaster} from 'react-hot-toast'
 const App = () => {
   return (
     <BrowserRouter>
-      {/* <Sidebar /> */}
       <Routes>
-        <Route path='/' element={<Sidebar />} />
+        <Route path='/' element={<UploadBlog />} />
         <Route path='/add-blog' element={<UploadBlog />} />
         <Route path='/blog-list' element={<BlogList />} />
         <Route path='/subscriptions' element={<Subscriptions />} />

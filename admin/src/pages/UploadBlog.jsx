@@ -124,7 +124,7 @@ const UploadBlog = () => {
                         <option value="Lifestyle" className='text-black'>Lifestyle</option>
                         <option value="Science" className='text-black'>Science</option>
                     </select>
-                    <button type="submit">Add Blog</button>
+                    <button className='px-8 py-2 w-fit mt-10 bg-white rounded-md border border-black shadow-[-5px_5px_0px_#000000]' type="submit">Add Blog</button>
                 </form>
             </div>
         </div>
