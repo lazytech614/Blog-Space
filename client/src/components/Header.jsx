@@ -12,7 +12,10 @@ const Header = () => {
 
   return (
     <nav className='sticky top-0 px-4 sm:px-10 md:px-20 py-6 sm:py-10 bg-slate-100 w-full flex justify-between items-center shadow-[-1px_1px_4px_#000000] z-[10]'>
-       <div onClick={() => navigate("/")} className='text-[24px] sm:text-[32px] font-bold cursor-pointer'>Blog Space</div> 
+       <div onClick={() => navigate("/")} className='text-[24px] sm:text-[32px] font-bold cursor-pointer flex justify-center items-center gap-2'>
+            <img className='w-6 sm:w-8 md:w-10' src="https://img.icons8.com/?size=200&id=OENhm99NTnV6&format=png" alt="" />
+            <span>Blog Space</span>
+       </div> 
         <div className='hidden sm:flex gap-10'>
             <button className='px-4 py-2 bg-white rounded-md border border-black shadow-[-5px_5px_0px_#000000] flex items-center gap-2'>
                 <span>Login</span>
