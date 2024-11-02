@@ -68,13 +68,13 @@ const UploadBlog = () => {
     };
     
     return (
-        <div className='flex'>
+        <div className='flex flex-col sm:flex-row'>
             <Sidebar />
             <div className='w-full'>
                 <Navbar />
-                <form onSubmit={handleSubmit} className='px-10 py-4 flex flex-col gap-2'>
+                <form onSubmit={handleSubmit} className='px-6 lg:px-10 py-4 flex flex-col gap-2 w-full sm:w-[90%] md:w-[80%] xl:w-[60%]'>
                     <div>
-                        <p className='mb-2'>Upload Thumbnail</p>
+                        <p className='mb-2 text-[12px] sm:text-[16px]'>Upload Thumbnail</p>
                         <label htmlFor="image">
                             <img 
                                 className='w-[100px] cursor-pointer' 
@@ -91,32 +91,32 @@ const UploadBlog = () => {
                         />
                     </div>
                     <div>
-                        <p className='mb-2'>Blog title</p>
+                        <p className='mb-2 text-[12px] sm:text-[16px]'>Blog title</p>
                         <input 
                             type="text" 
                             name="title" 
                             value={formData.title}
-                            className='w-[60%] border border-black rounded-md px-2 py-2 outline-none' 
+                            className='w-full border border-black rounded-md px-2 py-2 outline-none' 
                             required 
                             onChange={handleChange}
                         />
                     </div>
                     <div>
-                        <p className='mb-2'>Blog description</p>
+                        <p className='mb-2 text-[12px] sm:text-[16px]'>Blog description</p>
                         <textarea 
                             name='post' 
                             value={formData.post}
                             cols="30" 
                             rows="10" 
-                            className='w-[60%] border border-black rounded-md px-2 py-2 outline-none'
+                            className='w-full border border-black rounded-md px-2 py-2 outline-none'
                             onChange={handleChange}
                         ></textarea>
                     </div>
-                    <p className='mb-2'>Blog category</p>
+                    <p className='mb-2 text-[12px] sm:text-[16px]'>Blog category</p>
                     <select 
                         name='category' 
                         value={formData.category} 
-                        className='w-[60%] border border-black rounded-md px-2 py-2 outline-none'
+                        className='w-full border border-black rounded-md px-2 py-2 outline-none text-[12px] sm:text-[16px]'
                         onChange={handleChange}
                     >
                         <option value="Technology" className='text-black'>Technology</option>
@@ -124,7 +124,7 @@ const UploadBlog = () => {
                         <option value="Lifestyle" className='text-black'>Lifestyle</option>
                         <option value="Science" className='text-black'>Science</option>
                     </select>
-                    <button className='px-8 py-2 w-fit mt-10 bg-white rounded-md border border-black shadow-[-5px_5px_0px_#000000]' type="submit">Add Blog</button>
+                    <button className='px-8 py-2 w-fit mt-10 bg-white rounded-md border border-black shadow-[-5px_5px_0px_#000000] text-[12px] sm:text-[16px]' type="submit">Add Blog</button>
                 </form>
             </div>
         </div>

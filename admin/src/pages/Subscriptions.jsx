@@ -6,7 +6,7 @@ import { subscribers } from '../constants/subscribers'
 
 const Subscriptions = () => {
   return (
-    <div className='flex'>
+    <div className='flex flex-col sm:flex-row'>
         <Sidebar />
         <div className='w-full'>
           <Navbar />

@@ -3,7 +3,7 @@ import React from 'react'
 const Navbar = () => {
   return (
     <nav className='w-full'>
-            <div className='h-[80px] px-6 sm:px-10 bg-slate-100 w-full border-b border-black flex justify-between items-center'> 
+            <div className='h-[80px] px-6 lg:px-10 bg-slate-100 w-full border-b border-black flex justify-between items-center'> 
                 <h1 className='text-[20px]'>Admin Panel</h1>
                 <div className='h-[80px] w-[80px] rounded-full overflow-hidden flex justify-center items-center'>
                     <img
