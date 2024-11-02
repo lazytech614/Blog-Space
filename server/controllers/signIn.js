@@ -1,5 +1,6 @@
 import { client } from "../db/connection.js";
 import generateTokenAndSetCookie from "../utils/generateToken.js";
+import bcrypt from "bcrypt";
 
 export const signIn = async (req, res) => {
   const { username, password } = req.body;
@@ -17,8 +18,13 @@ export const signIn = async (req, res) => {
 
     const user = result.rows[0];
 
-    if (password !== user.password)
-      return res.status(401).json({ message: "Incorrect password" });
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordCorrect) {
+      return res
+        .status(401)
+        .json({ message: "Incorrect password", success: 0 });
+    }
 
     generateTokenAndSetCookie(user.username, res);
 
