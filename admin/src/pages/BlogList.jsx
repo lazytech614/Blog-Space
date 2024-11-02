@@ -37,16 +37,16 @@ const BlogList = () => {
   };
 
   return (
-    <div className='flex'>
+    <div className='flex flex-col sm:flex-row'>
       <Sidebar />
       <div className='w-full'>
         <Navbar />
-        <div className='px-10 pt-4'>
-          <div className='grid grid-cols-[3fr,1fr,1fr,1fr] gap-2 mb-8'>
-            <div className='uppercase w-full py-2 px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Title</div>
-            <div className='uppercase w-full py-2 px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Category</div>
-            <div className='uppercase w-full py-2 px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Created at</div>
-            <div className='uppercase w-full py-2 px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Action</div>
+        <div className='px-6 lg:px-10 pt-4 text-[12px] lg:text-[16px]'>
+          <div className='grid grid-cols-[3fr,1fr,1fr,1fr] gap-2 mb-8 '>
+            <div className='uppercase w-full py-2 px-2 md:px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Title</div>
+            <div className='uppercase w-full py-2 px-2 md:px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Category</div>
+            <div className='uppercase w-full py-2 px-2 md:px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Created at</div>
+            <div className='uppercase w-full py-2 px-2 md:px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Action</div>
           </div>
           <div className='grid grid-cols-[3fr,1fr,1fr,1fr] gap-2 overflow-y-auto h-[80vh] scrollbar-hidden'>
             {blogList.map((blog) => (
