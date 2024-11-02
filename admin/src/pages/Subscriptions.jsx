@@ -10,7 +10,7 @@ const Subscriptions = () => {
         <Sidebar />
         <div className='w-full'>
           <Navbar />
-          <div className='px-10 pt-4'>
+          <div className='px-6 sm:px-10 pt-4 text-[12px] lg:text-[16px]'>
           <div className='grid grid-cols-[1fr,3fr,1fr,1fr] gap-2 mb-8'>
             <div className='uppercase w-full py-2 px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Name</div>
             <div className='uppercase w-full py-2 px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Email Id</div>
