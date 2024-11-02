@@ -12,7 +12,6 @@ export const signIn = async (req, res) => {
       [username]
     );
 
-    // console.log(result.rows);
     if (result.rows.length === 0)
       return res.status(404).json({ message: "No user found" });
 
