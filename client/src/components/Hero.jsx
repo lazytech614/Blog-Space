@@ -7,7 +7,7 @@ const Hero = () => {
     email: ""
   })
 
-  const {isSubscribed} = useAuthContext()
+  const {authUser,isSubscribed, setIsSubscribed} = useAuthContext()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -22,15 +22,15 @@ const Hero = () => {
     console.log(formData);
 
     try{
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/subscribe`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/subscribe/${authUser}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(formData)
       })
 
       if(response.ok){
+        setIsSubscribed(true)
         toast.success("Thank you for subscribing!")
         setFormData({
           email: ""
