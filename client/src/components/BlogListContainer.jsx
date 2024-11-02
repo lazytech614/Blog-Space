@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { categories } from '../constants/categories'
 import BlogCard from './BlogCard'
-import { blogs } from '../constants/blogList'
+import { useFeedContext } from '../context/BlogContext'
 
 const BlogListContainer = () => {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [filteredBlogs, setFilteredBlogs] = useState([])
+
+  const { feed } = useFeedContext()
+  const blogs = feed;
 
   useEffect(() => {
     if(selectedCategory === "All") {
@@ -13,7 +16,7 @@ const BlogListContainer = () => {
     } else {
       setFilteredBlogs(blogs.filter((blog) => blog.category.toLocaleLowerCase() === selectedCategory.toLocaleLowerCase()))
     }
-  }, [selectedCategory])
+  }, [selectedCategory, blogs])
 
   return (
     <div className='mt-10 flex flex-col gap-4'>

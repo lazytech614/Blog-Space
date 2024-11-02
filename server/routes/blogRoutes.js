@@ -7,7 +7,7 @@ import upload from "../utils/uploadBlogImage.js";
 const router = Router();
 
 router.get("/all-blogs", getAllBlogs);
-router.post("/post-blog", upload.single("image"), postBlog);
-router.post("/delete-blog", deleteBlog);
+router.post("/upload-blog", upload.single("thumbnail"), postBlog);
+router.delete("/delete-blog/:id", deleteBlog);
 
 export default router;

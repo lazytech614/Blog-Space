@@ -1,12 +1,12 @@
 import { client } from "../db/connection.js";
 
 export const deleteBlog = async (req, res) => {
-  const { postId } = req.body;
+  const { id } = req.params;
 
   try {
     const result = await client.query(
       "DELETE FROM blogs WHERE id = $1 RETURNING *",
-      [postId]
+      [id]
     );
 
     // Check if a post was deleted
@@ -15,7 +15,7 @@ export const deleteBlog = async (req, res) => {
     }
 
     // Send response back with the deleted post data
-    res.status(200).json({ data: result.rows[0], success: 1 });
+    res.status(200).json({ message: "Blog deleted successfullt" });
   } catch (err) {
     console.error("Error deleting post:", err);
     res.status(500).json({ error: "Failed to delete post" });

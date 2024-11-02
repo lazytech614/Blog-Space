@@ -13,10 +13,12 @@ export const client = new Client({
 });
 
 const connectToDb = async () => {
-  await client.connect();
-  //   const res = await client.query("SELECT * FROM blogs LIMIT 1");
-  //   console.log(res.rows[0].title);
-  //   await client.end();
+  try {
+    await client.connect();
+    console.log("Connected to the database successfully!");
+  } catch (err) {
+    console.log(err.message);
+  }
 };
 
 export default connectToDb;
