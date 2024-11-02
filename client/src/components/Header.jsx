@@ -52,10 +52,6 @@ const Header = () => {
         }
     }
 
-    // useEffect(() => {
-    //     localStorage.getItem("username") ? setIsLoggedIn(true) : setIsLoggedIn(false);
-    // }, [authUser])
-
   return (
     <nav className='sticky top-0 px-4 sm:px-10 md:px-20 py-6 sm:py-10 bg-slate-100 w-full flex justify-between items-center shadow-[-1px_1px_4px_#000000] z-[10]'>
        <div onClick={() => navigate("/")} className='text-[24px] sm:text-[32px] font-bold cursor-pointer flex justify-center items-center gap-2'>
@@ -83,7 +79,7 @@ const Header = () => {
        ) }
        {isMenuOpen && <Sidebar />}
 
-       <div className='sm:hidden'>
+       <div className='sm:hidden cursor-pointer'>
         {!isMenuOpen ? (
             <img onClick={() => setIsMenuOpen(!isMenuOpen)} src={menuImage} alt="menu" className='w-6' />
         ) : (
