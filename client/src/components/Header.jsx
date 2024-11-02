@@ -8,12 +8,16 @@ import Sidebar from './Sidebar'
 import {useNavigate} from 'react-router-dom'
 import { SignInModal } from '../modal/SignInModal'
 import { SignUpModal } from '../modal/SignUpModal'
+import toast from 'react-hot-toast'
+import { useAuthContext } from '../context/AuthContext'
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isOpenSignInModal, setIsOpenSignInModal] = useState(false)
     const [isOpenSignUpModal, setIsOpenSignUpModal] = useState(false)
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const {authUser, setAuthUser} = useAuthContext()
 
     const navigate = useNavigate()
 
@@ -25,11 +29,32 @@ const Header = () => {
         setIsOpenSignUpModal(true)
     }
 
-    const handleLogOutClick = () => {}
+    const handleLogOutClick = async() => {
+        try{
+            setIsLoading(true)
+            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: 'include'
+            })
+            if(response.ok) {
+                localStorage.removeItem("username")
+                setAuthUser(null)
+                toast.success("Logged out successfully!");
+            }
+        }catch(err){
+            console.log(err.message);
+            toast.error(err.message);
+        }finally{
+            setIsLoading(false)
+        }
+    }
 
-    useEffect(() => {
-        localStorage.getItem("username") ? setIsLoggedIn(true) : setIsLoggedIn(false);
-    }, [])
+    // useEffect(() => {
+    //     localStorage.getItem("username") ? setIsLoggedIn(true) : setIsLoggedIn(false);
+    // }, [authUser])
 
   return (
     <nav className='sticky top-0 px-4 sm:px-10 md:px-20 py-6 sm:py-10 bg-slate-100 w-full flex justify-between items-center shadow-[-1px_1px_4px_#000000] z-[10]'>
@@ -37,10 +62,10 @@ const Header = () => {
             <img className='w-6 sm:w-8 md:w-10' src="https://img.icons8.com/?size=200&id=OENhm99NTnV6&format=png" alt="" />
             <span>Blog Space</span>
        </div> 
-       {isLoggedIn ? (
+       {authUser ? (
         <div className='hidden sm:flex gap-10'>
-            <button onClick={handleLogOutClick} className='px-4 py-2 bg-white rounded-md border border-black shadow-[-5px_5px_0px_#000000] flex items-center gap-2'>
-                <span>Logout</span>
+            <button onClick={handleLogOutClick} className='px-4 py-2 bg-white rounded-md border border-black shadow-[-5px_5px_0px_#000000] flex items-center gap-2' disabled={isLoading}>
+                <span>{isLoading ? "Logging out..." : "Logout"}</span>
                 <img src={logoutImage} alt="login" className='w-6' /> 
             </button>
         </div>

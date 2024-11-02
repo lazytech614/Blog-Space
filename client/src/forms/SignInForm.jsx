@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import closeIcon from "/close-large-fill.svg"
 import toast from 'react-hot-toast'
+import { useAuthContext } from '../context/AuthContext'
 
 const SignInForm = ({setIsOpenSignInModal}) => {
     const [formData, setFormData] = useState({
@@ -8,6 +9,8 @@ const SignInForm = ({setIsOpenSignInModal}) => {
         password: ''
     })
     const [isLoading, setIsLoading] = useState(false)
+
+    const {setAuthUser} = useAuthContext()
 
     const handleCloseIconClick = () => {
         setIsOpenSignInModal(false)
@@ -36,7 +39,8 @@ const SignInForm = ({setIsOpenSignInModal}) => {
 
             if(response.ok){
                 setIsOpenSignInModal(false)
-                localStorage.setItem("username", formData.username)
+                localStorage.setItem("username", JSON.stringify(formData.username))
+                setAuthUser(formData.username)
                 toast.success("Logged in successfully!")
             }
         }catch(err){
