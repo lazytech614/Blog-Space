@@ -27,7 +27,6 @@ export const signUp = async (req, res) => {
       [name, username, hashedPassword, email]
     );
 
-    console.log(newUserResult.rows[0]);
     const newUser = newUserResult.rows[0];
 
     if (newUser) {
