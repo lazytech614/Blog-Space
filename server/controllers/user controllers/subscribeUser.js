@@ -12,7 +12,7 @@ export const subscribeUser = async (req, res) => {
 
     // Check if user exists
     if (userDetails.rows.length === 0) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found", success: 0 });
     }
 
     const { email, id } = userDetails.rows[0];
@@ -24,7 +24,9 @@ export const subscribeUser = async (req, res) => {
     );
 
     if (checkIsSubscribed.rows.length !== 0) {
-      return res.status(409).json({ message: "User already subscribed" });
+      return res
+        .status(409)
+        .json({ message: "User already subscribed", success: 0 });
     }
 
     // Insert subscription details
@@ -39,9 +41,13 @@ export const subscribeUser = async (req, res) => {
       [true, username]
     );
 
-    return res.status(200).json({ message: "Subscription successful!" });
+    return res
+      .status(200)
+      .json({ message: "Subscription successful!", success: 1 });
   } catch (error) {
     console.error("Error subscribing user:", error);
-    return res.status(500).json({ message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ message: "Internal server error", success: 0 });
   }
 };

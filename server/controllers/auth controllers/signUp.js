@@ -7,7 +7,9 @@ export const signUp = async (req, res) => {
   const { name, username, email, password, confirmPassword } = req.body;
 
   if (password !== confirmPassword)
-    return res.status(400).json({ message: "Passwords do not match" });
+    return res
+      .status(400)
+      .json({ message: "Passwords do not match", success: 0 });
 
   try {
     const userResult = await client.query(
@@ -16,7 +18,9 @@ export const signUp = async (req, res) => {
     );
 
     if (userResult.rows.length > 0)
-      return res.status(400).json({ message: "User already exists" });
+      return res
+        .status(400)
+        .json({ message: "User already exists", success: 0 });
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -31,11 +35,13 @@ export const signUp = async (req, res) => {
 
     if (newUser) {
       generateTokenAndSetCookie(newUser.username, res);
-      res.status(201).json({ message: "New user created successfully" });
+      res
+        .status(201)
+        .json({ message: "New user created successfully", success: 1 });
     } else {
-      res.status(400).json({ message: "Invalid data" });
+      res.status(400).json({ message: "Invalid data", success: 0 });
     }
   } catch (err) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", success: 0 });
   }
 };

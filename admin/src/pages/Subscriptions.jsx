@@ -19,6 +19,11 @@ const Subscriptions = () => {
             'Content-Type': 'application/json',
           },
         }).then((res) => res.json());
+
+        if (!response.success) {
+          toast.error(response.message || "Failed to fetch subscribers");
+          return;
+        }
         setSubscribers(response.subscribers || []);
       };
       fetchSubscribers()
@@ -35,9 +40,11 @@ const Subscriptions = () => {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/cancel-subscription/${id}`,
         { method: 'DELETE' }
       ).then((res) => res.json());
-      if (response.message) {
+      if (response.success) {
         setSubscribers(subscribers.filter((subscriber) => subscriber.id !== id));
-        toast.success("Subscription cancelled successfully");
+        toast.success(response.message || "Subscription cancelled successfully");
+      }else{
+        toast.error(response.message || "Failed to cancel subscription");
       }
     } catch (error) {
       console.log(error.message);

@@ -8,6 +8,7 @@ const BlogListContainer = () => {
   const [filteredBlogs, setFilteredBlogs] = useState([])
 
   const { feed } = useFeedContext()
+  // console.log(feed);
   const blogs = feed;
 
   useEffect(() => {

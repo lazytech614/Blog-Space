@@ -46,11 +46,11 @@ const UploadBlog = () => {
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/upload-blog`, {
                 method: "POST",
                 body: data, // Use FormData as the body
-            });
+            }).then((res) => res.json());
             
-            const result = await response.json();
-            if (response.ok) {
-                toast.success(result.message); // Adjust this based on your server's response
+            // const result = await response.json();
+            if (response.success) {
+                toast.success(response.message || "Blog uploaded successfully"); // Adjust this based on your server's response
                 setThumbnail(null);
                 setFormData({
                     title: "",
@@ -59,7 +59,7 @@ const UploadBlog = () => {
                     thumbnail: ""
                 });
             } else {
-                toast.error(result.error || "Failed to upload blog");
+                toast.error(response.message || "Failed to upload blog");
             }
         } catch (err) {
             console.error(err.message);

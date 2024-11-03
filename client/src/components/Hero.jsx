@@ -19,9 +19,6 @@ const Hero = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(formData);
-    
-
     try{
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/subscribe/${authUser}`, {
         method: "POST",

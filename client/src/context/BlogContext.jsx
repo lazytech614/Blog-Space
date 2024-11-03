@@ -12,7 +12,7 @@ export const FeedContextProvider = ({ children }) => {
     useEffect(() => {
         const fetchFeed = async () => {
             try {   
-                fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/all-blogs`).then((res) => res.json()).then((data) => setFeed(data));
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/all-blogs`).then((res) => res.json()).then((data) => setFeed(data.data));
             } catch (error) {
                 console.error("Error fetching feed:", error);
             }

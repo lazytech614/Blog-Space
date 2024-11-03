@@ -41,9 +41,9 @@ const Users = () => {
           {method: 'DELETE'}
         ).then((res) => res.json())
 
-        if (response.message) {
+        if (response.success) {
+          toast.success(response.message || 'User deleted successfully');
           setUsers(users.filter((user) => user.id !== id));
-          toast.success(response.message);
         }
       } catch (error) {
         console.log(error.message);

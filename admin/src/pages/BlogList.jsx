@@ -9,9 +9,16 @@ const BlogList = () => {
 
   useEffect(() => {
     try {
-      fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/all-blogs`)
-        .then((res) => res.json())
-        .then((data) => setBlogList(data))
+      const fetchBlogs = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/all-blogs`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then((res) => res.json());
+        setBlogList(response.data);
+      };
+      fetchBlogs()
     } catch (error) {
       toast.error("Failed to fetch blogs");
     }
@@ -22,14 +29,14 @@ const BlogList = () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/delete-blog/${id}`, {
         method: 'DELETE',
-      });
+      }).then((res) => res.json());
 
-      if (response.ok) {
+      if (response.success) {
         // Remove the deleted blog from the blogList
         setBlogList((prevList) => prevList.filter((blog) => blog.id !== id));
-        toast.success("Blog deleted successfully");
+        toast.success(response.message);
       } else {
-        toast.error("Failed to delete the blog");
+        toast.error(response.message);
       }
     } catch (error) {
       toast.error("An error occurred while deleting the blog");

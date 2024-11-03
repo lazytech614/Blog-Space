@@ -5,7 +5,9 @@ import bcrypt from "bcrypt";
 export const signIn = async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password)
-    return res.status(400).json({ message: "Please provide all data" });
+    return res
+      .status(400)
+      .json({ message: "Please provide all data", success: 0 });
 
   try {
     const result = await client.query(
@@ -14,7 +16,7 @@ export const signIn = async (req, res) => {
     );
 
     if (result.rows.length === 0)
-      return res.status(404).json({ message: "No user found" });
+      return res.status(404).json({ message: "No user found", success: 0 });
 
     const user = result.rows[0];
 
@@ -28,9 +30,9 @@ export const signIn = async (req, res) => {
 
     generateTokenAndSetCookie(user.username, res);
 
-    res.status(200).json({ message: "Logged in successfully!" });
+    res.status(200).json({ message: "Logged in successfully!", success: 1 });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", success: 0 });
   }
 };

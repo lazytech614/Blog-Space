@@ -11,6 +11,6 @@ export const postBlog = async (req, res) => {
     res.status(200).json({ message: "Blog uploaded successfully", success: 1 });
   } catch (err) {
     console.error("Error saving blog post:", err);
-    res.status(500).json({ error: "Failed to save blog post" });
+    res.status(500).json({ error: "Internal server error", success: 0 });
   }
 };

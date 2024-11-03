@@ -6,9 +6,9 @@ export const logOut = (req, res) => {
       // secure: process.env.NODE_ENV === "production", // Ensure this matches your environment
       sameSite: "Strict", // SameSite policy (optional, based on your original cookie settings)
     });
-    res.status(200).json({ message: "Logged out successfully" });
+    res.status(200).json({ message: "Logged out successfully", success: 1 });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", success: 0 });
   }
 };

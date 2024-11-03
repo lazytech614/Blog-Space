@@ -35,15 +35,15 @@ const SignInForm = ({setIsOpenSignInModal}) => {
                 },
                 credentials: "include",
                 body: JSON.stringify(formData)
-            })
+            }).then((res) => res.json())
 
-            if(response.ok){
+            if(response.success){
                 setIsOpenSignInModal(false)
                 localStorage.setItem("username", JSON.stringify(formData.username))
                 setAuthUser(formData.username)
-                toast.success("Logged in successfully!")
+                toast.success(response.message)
             }else{
-                toast.error(response.statusText)
+                toast.error(response.message)
             }
             
         }catch(err){

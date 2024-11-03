@@ -18,22 +18,25 @@ export const cancelSubscription = async (req, res) => {
       );
 
       if (updateResult.rowCount > 0) {
-        res
-          .status(200)
-          .json({
-            message:
-              "User successfully removed from subscriptions and updated status",
-          });
+        res.status(200).json({
+          message: "Subscription cancelled successfully",
+          success: 1,
+        });
       } else {
         res
           .status(500)
-          .json({ message: "Failed to update user subscription status" });
+          .json({
+            message: "Failed to update user subscription status",
+            success: 0,
+          });
       }
     } else {
-      res.status(404).json({ message: "User not found in subscriptions" });
+      res
+        .status(404)
+        .json({ message: "User not found in subscriptions", success: 0 });
     }
   } catch (err) {
     console.log(err.message);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", success: 0 });
   }
 };
