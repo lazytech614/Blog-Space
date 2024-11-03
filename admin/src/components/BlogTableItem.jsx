@@ -15,7 +15,7 @@ const BlogTableItem = ({ id, title, category, created_at, onDelete }) => {
       <div className='w-full py-2 px-4'>{title || "No title"}</div>
       <div className='w-full py-2 px-4'>{category || "No category"}</div>
       <div className='w-full py-2 px-4'>{formattedDate || "No date"}</div>
-      <div className='w-full py-2 px-4 flex justify-start items-center gap-2 text-[12px]'>
+      <div className='w-full py-2 px-4 flex justify-start items-start gap-2 text-[12px]'>
         <button
           className='border border-[#FF0000] hover:bg-[#ff0000] hover:text-white hover:border-white duration-100 shadow-[-5px_5px_0px_#FF0000] p-2 rounded-md'
           onClick={onDelete}

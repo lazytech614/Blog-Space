@@ -41,7 +41,7 @@ const Subscriptions = () => {
             <div className='uppercase w-full py-2 px-2 md:px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Subscribed at</div>
             <div className='uppercase w-full py-2 px-2 md:px-4 rounded-md border border-black shadow-[-5px_5px_0px_#000000]'>Action</div>
           </div>
-          <div className='grid grid-cols-[1fr,3fr,1fr,1fr] gap-2 overflow-y-auto h-[80vh] scrollbar-hidden'>
+          <div className='grid grid-cols-[1fr,3fr,1fr,1fr] gap-2 overflow-y-auto max-h-[80vh] scrollbar-hidden'>
             {subscribers.map((subscriber) => {
               return (
                 <React.Fragment key={subscriber.id}>
