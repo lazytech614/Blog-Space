@@ -6,7 +6,7 @@ const BlogDetails = () => {
   const { title, category, post, image } = location.state || {};
 
   return (
-    <div>
+    <div className='min-h-[100vh]'>
       <div className='relative min-h-[360px] bg-slate-100 flex flex-col justify-center items-center'>
         <h1 className='text-center font-bold text-[24px] sm:text-[28px] max-w-[80%] sm:max-w-[800px]'>{title}</h1>
         <div className='h-[80px] w-[80px] rounded-full overflow-hidden flex justify-center items-center'>

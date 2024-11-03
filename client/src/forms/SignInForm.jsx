@@ -42,7 +42,10 @@ const SignInForm = ({setIsOpenSignInModal}) => {
                 localStorage.setItem("username", JSON.stringify(formData.username))
                 setAuthUser(formData.username)
                 toast.success("Logged in successfully!")
+            }else{
+                toast.error(response.statusText)
             }
+            
         }catch(err){
             console.log(err.message);
             toast.error(err.message);
