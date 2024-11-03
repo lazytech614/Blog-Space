@@ -37,5 +37,5 @@ The admin panel allows administrators to efficiently manage and oversee the plat
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/yourusername/blog-space.git
+   git clone https://github.com/lazytech614/blog-space.git
    cd blog-space
