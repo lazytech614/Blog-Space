@@ -9,36 +9,43 @@ const Subscriptions = () => {
   const [subscribers, setSubscribers] = useState([]);
 
   useEffect(() => {
-    const fetchSubscribers = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/user/subscribers`,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-
-        if (!response.ok) {
-          return;
-        }
-
-        const data = await response.json();
-        setSubscribers(data.message || []);
-      } catch (error) {
-        console.error(error.message);
-        toast.error(error.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     window.scrollTo(0, 0);
-    fetchSubscribers();
+    try {
+      setIsLoading(true);
+      const fetchSubscribers = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/subscribers`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then((res) => res.json());
+        setSubscribers(response.subscribers || []);
+      };
+      fetchSubscribers()
+    } catch (err) {
+      toast.error(err.message);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
+
+  const handleDelete = async (id) => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/cancel-subscription/${id}`,
+        { method: 'DELETE' }
+      ).then((res) => res.json());
+      if (response.message) {
+        setSubscribers(subscribers.filter((subscriber) => subscriber.id !== id));
+        toast.success("Subscription cancelled successfully");
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className='flex flex-col sm:flex-row'>
@@ -62,7 +69,7 @@ const Subscriptions = () => {
             ) : (
               subscribers.map((subscriber) => (
                 <React.Fragment key={subscriber.id}>
-                  <SubscriptionTableItem {...subscriber} />
+                  <SubscriptionTableItem {...subscriber} onDelete={() => handleDelete(subscriber.id)} />
                   <div className='col-span-4 h-[2px] bg-black'></div>
                 </React.Fragment>
               ))

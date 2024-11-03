@@ -4,6 +4,7 @@ import { checkSubscription } from "../controllers/user controllers/checkSubscrip
 import { getAllSubscribers } from "../controllers/user controllers/getAllSubscribers.js";
 import { getAllUsers } from "../controllers/user controllers/getAllUsers.js";
 import { deleteUser } from "../controllers/user controllers/deleteUser.js";
+import { cancelSubscription } from "../controllers/user controllers/cancelSubscription.js";
 
 const router = Router();
 
@@ -12,5 +13,6 @@ router.post("/subscribe/:username", subscribeUser);
 router.get("/check-subscription/:username", checkSubscription);
 router.get("/subscribers", getAllSubscribers);
 router.delete("/delete-user/:id", deleteUser);
+router.delete("/cancel-subscription/:id", cancelSubscription);
 
 export default router;

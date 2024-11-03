@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SubscriptionTableItem = ({name,email, subscribed_at}) => {
+const SubscriptionTableItem = ({name,email, subscribed_at, onDelete}) => {
   const isoDate = subscribed_at;
   const date = new Date(isoDate);
 
@@ -17,7 +17,7 @@ const SubscriptionTableItem = ({name,email, subscribed_at}) => {
       <div className='w-full py-2 px-4 flex justify-start items-start gap-4'>
         <button
           className='border border-[#FF0000] hover:bg-[#ff0000] hover:text-white hover:border-white duration-100 shadow-[-5px_5px_0px_#FF0000] p-2 rounded-md text-[12px]'
-        //   onClick={onDelete}
+          onClick={onDelete}
         >
           <svg className='w-[12px] md:w-[16px]' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10.5859 12L2.79297 4.20706L4.20718 2.79285L12.0001 10.5857L19.793 2.79285L21.2072 4.20706L13.4143 12L21.2072 19.7928L19.793 21.2071L12.0001 13.4142L4.20718 21.2071L2.79297 19.7928L10.5859 12Z"></path></svg>
           <span className='hidden'>Delete</span>

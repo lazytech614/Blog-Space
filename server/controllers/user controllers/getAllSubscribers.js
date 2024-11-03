@@ -10,7 +10,7 @@ export const getAllSubscribers = async (req, res) => {
     );
 
     if (result.rows.length > 0) {
-      res.status(200).json({ message: result.rows });
+      res.status(200).json({ subscribers: result.rows });
     } else {
       res.status(404).json({ message: "No subscribers found" });
     }
