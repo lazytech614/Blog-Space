@@ -1,5 +1,5 @@
-import { client } from "../db/connection.js";
-import generateTokenAndSetCookie from "../utils/generateToken.js";
+import { client } from "../../db/connection.js";
+import generateTokenAndSetCookie from "../../utils/generateToken.js";
 import bcrypt from "bcrypt";
 
 export const signIn = async (req, res) => {

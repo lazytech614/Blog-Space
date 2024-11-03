@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jsonwebtoken from "jsonwebtoken";
-import { client } from "../db/connection.js";
-import generateTokenAndSetCookie from "../utils/generateToken.js";
+import { client } from "../../db/connection.js";
+import generateTokenAndSetCookie from "../../utils/generateToken.js";
 
 export const signUp = async (req, res) => {
   const { name, username, email, password, confirmPassword } = req.body;

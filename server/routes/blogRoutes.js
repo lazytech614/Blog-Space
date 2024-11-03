@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { getAllBlogs } from "../controllers/getAllBlogs.js";
-import { postBlog } from "../controllers/postBlog.js";
-import { deleteBlog } from "../controllers/deleteBlog.js";
+import { getAllBlogs } from "../controllers/blog controllers/getAllBlogs.js";
+import { postBlog } from "../controllers/blog controllers/postBlog.js";
+import { deleteBlog } from "../controllers/blog controllers/deleteBlog.js";
 import upload from "../utils/uploadBlogImage.js";
 
 const router = Router();

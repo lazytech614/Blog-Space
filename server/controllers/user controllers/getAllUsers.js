@@ -1,4 +1,4 @@
-import { client } from "../db/connection.js";
+import { client } from "../../db/connection.js";
 
 export const getAllUsers = async (req, res) => {
   try {
