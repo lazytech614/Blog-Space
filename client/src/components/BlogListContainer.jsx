@@ -20,7 +20,7 @@ const BlogListContainer = () => {
   }, [selectedCategory, blogs])
 
   return (
-    <div className='mt-8 md:mt-10 flex flex-col gap-4'>
+    <div className='mt-8 md:mt-10 flex flex-col gap-4 max-w-[90%] mx-auto'>
       <div className='flex justify-center items-center gap-2 md:gap-4'>
         {categories.map((category, index) => (
           <div 
@@ -32,7 +32,7 @@ const BlogListContainer = () => {
           </div>
         ))}
       </div>
-      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 gap-y-8'>
+      <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-2 sm:gap-x-6 gap-y-4 sm:gap-y-8'>
         {filteredBlogs
           .filter(blog => selectedCategory === "All" || blog.category === selectedCategory)
           .map((blog, index) => (
