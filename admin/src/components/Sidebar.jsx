@@ -22,6 +22,10 @@ const Sidebar = () => {
                     <img src={blogListLogo} alt="" className='w-4 lg:w-6' />
                     <span>Blog List</span>
                 </Link>
+                <Link to="/users" className='w-full px-4 py-2 bg-white rounded-md sm:rounded-r-none border border-black shadow-[-5px_5px_0px_#000000] flex items-center gap-2'>
+                    <img src={subscriptionLogo} alt="" className='w-4 lg:w-6' />
+                    <span>Users</span>
+                </Link>
                 <Link to="/subscriptions" className='w-full px-4 py-2 bg-white rounded-md sm:rounded-r-none border border-black shadow-[-5px_5px_0px_#000000] flex items-center gap-2'>
                     <img src={subscriptionLogo} alt="" className='w-4 lg:w-6' />
                     <span>Subscriptions</span>
