@@ -3,7 +3,10 @@ import { client } from "../../db/connection.js";
 export const getAllSubscribers = async (req, res) => {
   try {
     const result = await client.query(
-      "SELECT id, name, email FROM users WHERE is_subscribed = TRUE"
+      `SELECT users.id, users.name, users.email, subscriptions.subscribed_at 
+       FROM users 
+       JOIN subscriptions ON users.id = subscriptions.userid 
+       WHERE users.is_subscribed = TRUE`
     );
 
     if (result.rows.length > 0) {

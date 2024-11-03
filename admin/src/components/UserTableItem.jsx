@@ -1,25 +1,7 @@
 import React, { useEffect, useState} from 'react'
 import toast from 'react-hot-toast'
 
-const UserTableItem = ({id, name, username, email, is_subscribed, onDelete}) => {
-  const [userId, setUserId] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
-
-  // console.log(typeof(id));
-
-  // const handleDelete = async (id) => {
-  //   // console.log(id);
-  //   try {
-  //     setIsLoading(true)
-  //     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/delete-user/${id}`).then((res) => res.json())
-  //     console.log(response);
-  //     setIsLoading(false)
-  //   } catch (error) {
-  //     console.log(error.message);
-  //     toast.error(error.message); 
-  //   }
-  // }
-  
+const UserTableItem = ({id, name, username, email, is_subscribed, onDelete}) => {  
   return (
     <>
         <div className='w-full py-2 px-4'>{id || "No id"}</div>

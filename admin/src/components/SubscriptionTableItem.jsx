@@ -1,11 +1,19 @@
 import React from 'react'
 
-const SubscriptionTableItem = ({name,email, subscribedAt}) => {
+const SubscriptionTableItem = ({name,email, subscribed_at}) => {
+  const isoDate = subscribed_at;
+  const date = new Date(isoDate);
+
+  const day = String(date.getUTCDate()).padStart(2, '0');
+  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+  const year = date.getUTCFullYear();
+
+  const formattedDate = `${day}-${month}-${year}`;
   return (
     <>
       <div className=' w-full py-2 px-4'>{name || "No name"}</div>
       <div className='w-full py-2 px-4'>{email || "No email"}</div>
-      <div className='w-full py-2 px-4'>{subscribedAt || "No date"}</div>
+      <div className='w-full py-2 px-4'>{formattedDate || "No date"}</div>
       <div className='w-full py-2 px-4 flex justify-start items-start gap-4'>
         <button
           className='border border-[#FF0000] hover:bg-[#ff0000] hover:text-white hover:border-white duration-100 shadow-[-5px_5px_0px_#FF0000] p-2 rounded-md text-[12px]'
