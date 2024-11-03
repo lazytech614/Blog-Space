@@ -44,7 +44,7 @@ const SignUpForm = ({setIsOpenSignUpModal}) => {
                 setIsOpenSignUpModal(false)
                 localStorage.setItem("username", JSON.stringify(formData.username))
                 setAuthUser(formData.username)
-                toast.success("Logged in successfully!")
+                toast.success("User created successfully!")
             }
         }catch(err){
             console.log(err.message);

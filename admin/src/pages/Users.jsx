@@ -34,6 +34,25 @@ const Users = () => {
       }
     }, [])
 
+    const handleDelete = async (id) => {
+      try {
+        setIsLoading(true)
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/delete-user/${id}`, 
+          {method: 'DELETE'}
+        ).then((res) => res.json())
+
+        if (response.message) {
+          setUsers(users.filter((user) => user.id !== id));
+          toast.success(response.message);
+        }
+      } catch (error) {
+        console.log(error.message);
+        toast.error(error.message); 
+      }finally{
+        setIsLoading(false)
+      }
+    }
+
   return (
     <div className='flex flex-col sm:flex-row'>
       <Sidebar />
@@ -51,7 +70,7 @@ const Users = () => {
           <div className='grid grid-cols-[0.1fr,1fr,1fr,2fr,1fr,1fr] gap-2 overflow-y-auto max-h-[80vh] scrollbar-hidden'>
             {users.map((user) => (
               <React.Fragment key={user.id}>
-                <UserTableItem {...user}  />
+                <UserTableItem {...user}  onDelete={() => handleDelete(user.id)}/>
                 <div className='col-span-6 h-[2px] bg-black'></div>
               </React.Fragment>
             ))}

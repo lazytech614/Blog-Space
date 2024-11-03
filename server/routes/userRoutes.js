@@ -11,6 +11,6 @@ router.get("/users", getAllUsers);
 router.post("/subscribe/:username", subscribeUser);
 router.get("/check-subscription/:username", checkSubscription);
 router.get("/subscribers", getAllSubscribers);
-router.get("/delete-user/:id", deleteUser);
+router.delete("/delete-user/:id", deleteUser);
 
 export default router;
