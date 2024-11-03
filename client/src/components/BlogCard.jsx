@@ -4,9 +4,12 @@ import arrowRightImage from "/arrow-right-line.svg"
 import likeIcon from "/thumb-up-line.svg"
 import dislikeIcon from "/thumb-down-line.svg"
 import commentIcon from "/discuss-fill.svg"
+import DOMPurify from 'dompurify';
 
 const BlogCard = ({ title, category, post, image }) => {
   const navigate = useNavigate();
+
+  const cleanHtml = DOMPurify.sanitize(post);
 
   const handleReadMore = () => {
     navigate('/blog-details', {
@@ -23,9 +26,9 @@ const BlogCard = ({ title, category, post, image }) => {
         <h2 className='bg-black text-white px-2 py-1 w-fit text-[12px] font-semibold rounded-sm'>{category}</h2>
         <div className='sm:space-y-2 flex-1'>
           <h1 className='font-semibold line-clamp-2 text-[12px] sm:text-[16px]'>{title}</h1>
-          <p className='line-clamp-2 text-[12px] sm:text-[16px]'>
-            {post}
-          </p>
+          <div className='line-clamp-2 text-[12px] sm:text-[16px]' dangerouslySetInnerHTML={{ __html: cleanHtml }}>
+            
+          </div>
         </div>
         <button onClick={handleReadMore} className='group relative flex justify-center items-center hover:gap-1 w-fit font-bold mt-auto text-[12px] sm:text-[16px] overflow-hidden'>
           <span>Read more ...</span>

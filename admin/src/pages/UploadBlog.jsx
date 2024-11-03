@@ -3,6 +3,8 @@ import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import uploadIcon from '/upload-icon.png'
 import toast from 'react-hot-toast'
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const UploadBlog = () => {
     const [thumbnail, setThumbnail] = useState(null)
@@ -31,9 +33,15 @@ const UploadBlog = () => {
         });
     }
 
+    const handleQuillChange = (value) => {
+        setFormData({
+            ...formData,
+            post: value
+        });
+    }
+
     const handleSubmit = async (e) => {
-        e.preventDefault();
-    
+        e.preventDefault();   
         const data = new FormData();
         data.append('title', formData.title);
         data.append('post', formData.post);
@@ -103,14 +111,22 @@ const UploadBlog = () => {
                     </div>
                     <div>
                         <p className='mb-2 text-[12px] sm:text-[16px]'>Blog description</p>
-                        <textarea 
-                            name='post' 
+                        <ReactQuill 
                             value={formData.post}
-                            cols="30" 
-                            rows="10" 
-                            className='w-full border border-black rounded-md px-2 py-2 outline-none'
-                            onChange={handleChange}
-                        ></textarea>
+                            onChange={handleQuillChange}
+                            theme="snow"
+                            modules={{
+                                toolbar: [
+                                    [{ 'header': [1, 2, false] }],
+                                    ['bold', 'italic', 'underline', 'strike'],
+                                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                                    ['link'],
+                                    ['clean']                                        
+                                ]
+                            }}
+                            className='bg-white border border-black rounded-md'
+                        />
                     </div>
                     <p className='mb-2 text-[12px] sm:text-[16px]'>Blog category</p>
                     <select 
