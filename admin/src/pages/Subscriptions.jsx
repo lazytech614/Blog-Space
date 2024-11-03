@@ -1,10 +1,34 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import SubscriptionTableItem from '../components/SubscriptionTableItem'
 import { subscribers } from '../constants/subscribers'
 
 const Subscriptions = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [subscribers, setSubscribers] = useState([])
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+
+    try{
+      setIsLoading(true)
+      
+      const fetchSubscribers = async () => {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/subscribers`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        }).then((res) => res.json())
+
+        setSubscribers(response.message)
+      }
+
+      fetchSubscribers()
+    }catch(err){}finally{}
+  }, [])
+
   return (
     <div className='flex flex-col sm:flex-row'>
         <Sidebar />
