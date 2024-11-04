@@ -2,6 +2,7 @@ import React, { useEffect, useState} from 'react'
 import toast from 'react-hot-toast'
 
 const UserTableItem = ({id, name, username, email, is_subscribed, onDelete}) => {  
+  
   return (
     <>
         <div className='w-full py-2 px-4'>{id || "No id"}</div>

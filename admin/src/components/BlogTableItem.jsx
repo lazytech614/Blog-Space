@@ -1,14 +1,8 @@
 import React from 'react'
+import getFormattedDate from '../utils/getFormattedDate';
 
 const BlogTableItem = ({ id, title, category, created_at, onDelete }) => {
-  const isoDate = created_at;
-  const date = new Date(isoDate);
-
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-  const year = date.getUTCFullYear();
-
-  const formattedDate = `${day}-${month}-${year}`;
+  const formattedDate = getFormattedDate(created_at);
 
   return (
     <>

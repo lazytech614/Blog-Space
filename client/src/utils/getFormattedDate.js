@@ -2,11 +2,27 @@ const getFormattedDate = (dateString) => {
   const isoDate = dateString;
   const date = new Date(isoDate);
 
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+  // Get day, month, and year
+  const day = date.getUTCDate();
+  const month = date.toLocaleString("default", { month: "long" }); // Get full month name
   const year = date.getUTCFullYear();
 
-  const formattedDate = `${day}-${month}-${year}`;
+  // Helper function to get ordinal suffix
+  const getOrdinalSuffix = (day) => {
+    if (day > 3 && day < 21) return "th"; // 4-20 are all 'th'
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+
+  const formattedDate = `${day}${getOrdinalSuffix(day)} ${month} ${year}`;
   return formattedDate;
 };
 

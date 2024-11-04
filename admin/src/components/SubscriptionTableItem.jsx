@@ -1,14 +1,9 @@
 import React from 'react'
+import getFormattedDate from '../utils/getFormattedDate'
 
 const SubscriptionTableItem = ({name,email, subscribed_at, onDelete}) => {
-  const isoDate = subscribed_at;
-  const date = new Date(isoDate);
-
-  const day = String(date.getUTCDate()).padStart(2, '0');
-  const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-  const year = date.getUTCFullYear();
-
-  const formattedDate = `${day}-${month}-${year}`;
+  const formattedDate = getFormattedDate(subscribed_at);
+  
   return (
     <>
       <div className=' w-full py-2 px-4'>{name || "No name"}</div>
