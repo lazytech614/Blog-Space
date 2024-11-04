@@ -1,14 +1,14 @@
 import { client } from "../../db/connection.js";
 
 export const reactBlog = async (req, res) => {
-  const { userId, postId } = req.params;
+  const { userId, blogId } = req.params;
   const { isLike } = req.body; // `isLike` will be true for like, false for dislike
 
   try {
     // Check if the user has already liked or disliked the post
     const result = await client.query(
       "SELECT * FROM likes_dislikes WHERE user_id = $1 AND post_id = $2",
-      [userId, postId]
+      [userId, blogId]
     );
 
     if (result.rows.length > 0) {
@@ -22,7 +22,7 @@ export const reactBlog = async (req, res) => {
       const updatedResult = await client.query(updateQuery, [
         isLike,
         userId,
-        postId,
+        blogId,
       ]);
       res.status(200).json({
         success: 1,
@@ -38,7 +38,7 @@ export const reactBlog = async (req, res) => {
       `;
       const insertResult = await client.query(insertQuery, [
         userId,
-        postId,
+        blogId,
         isLike,
       ]);
       res.status(201).json({

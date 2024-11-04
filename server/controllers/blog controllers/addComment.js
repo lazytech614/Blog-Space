@@ -1,7 +1,7 @@
 import { client } from "../../db/connection.js";
 
 export const addComment = async (req, res) => {
-  const { userId, postId } = req.params;
+  const { userId, blogId } = req.params;
   const { content } = req.body;
 
   if (!content) {
@@ -18,7 +18,7 @@ export const addComment = async (req, res) => {
       RETURNING *;
     `;
 
-    const result = await client.query(insertQuery, [userId, postId, content]);
+    const result = await client.query(insertQuery, [userId, blogId, content]);
 
     res.status(201).json({
       success: 1,
