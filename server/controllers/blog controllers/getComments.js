@@ -5,7 +5,7 @@ export const getComments = async (req, res) => {
 
   try {
     const query = `
-      SELECT comments.comment_id, comments.content, comments.created_at, users.username 
+      SELECT comments.comment_id, comments.content, comments.created_at, users.name 
       FROM comments 
       JOIN users ON comments.user_id = users.id
       WHERE comments.post_id = $1

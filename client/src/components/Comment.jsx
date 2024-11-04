@@ -9,11 +9,25 @@ const Comment = ({ commentator, content, date }) => {
     setIsExpanded((prev) => !prev);
   };
 
+  const getFormattedDate = (dateString) => {
+    const isoDate = dateString;
+    const date = new Date(isoDate);
+
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const year = date.getUTCFullYear();
+
+    const formattedDate = `${day}-${month}-${year}`;
+    return formattedDate
+  }
+
+  const formattedDate = getFormattedDate(date);
+
   return (
     <div className="flex flex-col gap-1">
       <div>
         <h4 className="text-sm font-semibold">{commentator}</h4>
-        <p className="text-xs">{date}</p>
+        <p className="text-xs">{formattedDate}</p>
       </div>
       <p
         className={`text-sm ${isExpanded ? '' : 'line-clamp-2'}`}

@@ -12,6 +12,7 @@ const BlogDetails = () => {
   const { id,title, category, post, image } = location.state || {};
   const [commentContent, setCommentContent] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const [commments, setCommments] = useState([])
 
   const cleanHtml = DOMPurify.sanitize(post);
 
@@ -76,7 +77,31 @@ const BlogDetails = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+
+    const fetchComments = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL}/api/blogs/get-comments/${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        ).then((res) => res.json());
+
+        if (response.success) {
+          setCommments(response.data);
+        } else {
+          console.error(response.message);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchComments();
+  }, [commments]);
 
   return (
     <div className='min-h-[calc(100vh-200px)] px-4 sm:px-10 md:px-20 py-6 lg:py-0 flex justify-center items-center'>
@@ -126,26 +151,21 @@ const BlogDetails = () => {
           </form>
           <div className='w-full flex flex-col gap-4'>
             <div className='shadow-[-1px_1px_2px_rgba(0,0,0,0.25)] rounded-md p-2 flex flex-col gap-1'>
-              <h3 className='text-md font-semibold'>Comments</h3>
-              <p className='text-sm hidden'>No comments yet</p>
+              {commments.length === 0 ? (
+                <p className='text-sm'>No comments yet</p>
+              ) : (
+                <h3 className='text-md font-semibold'>Comments</h3>
+              )}
             </div>
             <div className='flex flex-col gap-2 overflow-y-auto h-[340px] scrollbar-hidden shadow-[-1px_1px_2px_rgba(0,0,0,0.25)] rounded-md p-2'>
-              <Comment commentator="Rupanjan De" 
-                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, quas."
-                date="20th July, 2022"
-              />   
-              <Comment commentator="Payel De" 
-                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, quas."
-                date="20th November, 2021"
-              />
-              <Comment commentator="Payel De" 
-                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, quas."
-                date="20th November, 2021"
-              />
-              <Comment commentator="Riya De" 
-                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, quas."
-                date="20th January, 2012"
-              />
+              {commments.map((comment) => (
+                <Comment 
+                  key={comment.comment_id}
+                  commentator={comment.name} 
+                  content={comment.content}
+                  date={comment.created_at}
+                /> 
+              ))}
             </div>
           </div>
         </div>
