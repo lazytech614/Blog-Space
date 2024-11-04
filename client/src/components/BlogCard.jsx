@@ -5,6 +5,7 @@ import likeIcon from "/thumb-up-line.svg"
 import dislikeIcon from "/thumb-down-line.svg"
 import commentIcon from "/discuss-fill.svg"
 import DOMPurify from 'dompurify';
+import toast from 'react-hot-toast'
 
 const BlogCard = ({ id,title, category, post, image }) => {
   const [likesCount, setLikesCount] = useState(0);

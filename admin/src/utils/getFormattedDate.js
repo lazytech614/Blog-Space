@@ -2,11 +2,19 @@ const getFormattedDate = (dateString) => {
   const isoDate = dateString;
   const date = new Date(isoDate);
 
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0"); // Months are 0-indexed
-  const year = date.getUTCFullYear();
+  // Convert to Indian Standard Time (IST)
+  const options = {
+    timeZone: "Asia/Kolkata", // Set time zone to IST
+    day: "2-digit", // Get day in two-digit format
+    month: "2-digit", // Get month in two-digit format
+    year: "numeric", // Get full year
+  };
 
-  const formattedDate = `${day}-${month}-${year}`;
+  // Use toLocaleString to format the date according to IST
+  const formattedDateParts = date.toLocaleString("en-IN", options).split("/");
+
+  // Ensure correct format as dd-mm-yyyy
+  const formattedDate = `${formattedDateParts[0]}-${formattedDateParts[1]}-${formattedDateParts[2]}`;
 
   return formattedDate;
 };
