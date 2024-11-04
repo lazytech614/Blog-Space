@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import likeIcon from "/thumb-up-line.svg";
 import dislikeIcon from "/thumb-down-line.svg";
@@ -10,6 +10,8 @@ import toast from 'react-hot-toast';
 const BlogDetails = () => {
   const location = useLocation();
   const { id,title, category, post, image } = location.state || {};
+  const [commentContent, setCommentContent] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
 
   const cleanHtml = DOMPurify.sanitize(post);
 
@@ -38,6 +40,38 @@ const BlogDetails = () => {
       toast.error(error.message);
     }
     
+  };
+
+  const handleCommentClick = async(e) => {
+    e.preventDefault();
+    const userId = JSON.parse(localStorage.getItem("userDetails")).userId;
+    const content = commentContent;
+    try {
+      setIsLoading(true)
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/blogs/add-comment/${userId}/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content }),
+        }
+      ).then((res) => res.json());
+
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        console.error(response.message); 
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.error("Network or server error:", error);
+      toast.error(error.message);
+    } finally{
+      setIsLoading(false)
+      setCommentContent("")
+    }
   };
 
   useEffect(() => {
@@ -77,12 +111,19 @@ const BlogDetails = () => {
             <p className='text-sm'>20th July, 2022</p>
           </div>
           <div className='w-full h-[1px] bg-black'></div>
-          <div className='w-full h-[40px] border border-black rounded-3xl flex justify-between items-center px-2'>
-            <input type="text" className="bg-transparent w-[90%] h-full p-2 outline-none ps-4" placeholder="Write a comment" />
-            <div className='w-[10%] h-full flex justify-center items-center cursor-pointer'>
+          <form onSubmit={handleCommentClick} className='w-full h-[40px] border border-black rounded-3xl flex justify-between items-center px-2'>
+            <input 
+              type="text" 
+              name='comment' 
+              value={commentContent}
+              onChange={(e) => setCommentContent(e.target.value)}
+              className="bg-transparent w-[90%] h-full p-2 outline-none ps-4" 
+              placeholder="Write a comment" 
+            />
+            <button className='w-[10%] h-full flex justify-center items-center cursor-pointer' disabled={isLoading}>
               <img className='w-[20px]' src={sendIcon} alt="" />
-            </div>
-          </div>
+            </button>
+          </form>
           <div className='w-full flex flex-col gap-4'>
             <div className='shadow-[-1px_1px_2px_rgba(0,0,0,0.25)] rounded-md p-2 flex flex-col gap-1'>
               <h3 className='text-md font-semibold'>Comments</h3>
