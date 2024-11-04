@@ -39,7 +39,11 @@ const SignInForm = ({setIsOpenSignInModal}) => {
 
             if(response.success){
                 setIsOpenSignInModal(false)
-                localStorage.setItem("username", JSON.stringify(formData.username))
+                const userDetails = {
+                    username: formData.username,
+                    userId: response.userId, 
+                };        
+                localStorage.setItem("userDetails", JSON.stringify(userDetails));
                 setAuthUser(formData.username)
                 toast.success(response.message)
             }else{

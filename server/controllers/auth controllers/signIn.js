@@ -28,9 +28,15 @@ export const signIn = async (req, res) => {
         .json({ message: "Incorrect password", success: 0 });
     }
 
-    generateTokenAndSetCookie(user.username, res);
+    generateTokenAndSetCookie(user.id, user.username, res);
 
-    res.status(200).json({ message: "Logged in successfully!", success: 1 });
+    res
+      .status(200)
+      .json({
+        message: "Logged in successfully!",
+        userId: user.id,
+        success: 1,
+      });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Internal server error", success: 0 });

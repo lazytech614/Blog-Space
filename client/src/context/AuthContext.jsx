@@ -7,7 +7,8 @@ export const useAuthContext = () => {
 }
 
 export const AuthContextProvider = ({children}) => {
-    const [authUser, setAuthUser] = useState(JSON.parse(localStorage.getItem("username")) || null)
+    const storedUserDetails = JSON.parse(localStorage.getItem("userDetails")) || null;
+    const [authUser, setAuthUser] = useState(storedUserDetails);
     const [isSubscribed, setIsSubscribed] = useState(null);
 
     useEffect(() => {

@@ -34,10 +34,14 @@ export const signUp = async (req, res) => {
     const newUser = newUserResult.rows[0];
 
     if (newUser) {
-      generateTokenAndSetCookie(newUser.username, res);
+      generateTokenAndSetCookie(newUser.id, newUser.username, res);
       res
         .status(201)
-        .json({ message: "New user created successfully", success: 1 });
+        .json({
+          message: "New user created successfully",
+          userId: newUser.id,
+          success: 1,
+        });
     } else {
       res.status(400).json({ message: "Invalid data", success: 0 });
     }

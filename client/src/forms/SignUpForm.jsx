@@ -42,7 +42,11 @@ const SignUpForm = ({setIsOpenSignUpModal}) => {
             }).then((res) => res.json())
             if(response.success){
                 setIsOpenSignUpModal(false)
-                localStorage.setItem("username", JSON.stringify(formData.username))
+                const userDetails = {
+                    username: formData.username,
+                    userId: response.userId, 
+                };
+                localStorage.setItem("userDetails", JSON.stringify(userDetails));
                 setAuthUser(formData.username)
                 toast.success(response.message)
             }else{

@@ -32,7 +32,7 @@ const Sidebar = () => {
             credentials: 'include'
         })
         if(response.ok) {
-            localStorage.removeItem("username")
+            localStorage.removeItem("userDetails")
             setAuthUser(null)
             toast.success("Logged out successfully!");
         }
