@@ -7,7 +7,7 @@ import { reactBlog } from "../controllers/blog controllers/reactBlog.js";
 import { addComment } from "../controllers/blog controllers/addComment.js";
 import { getComments } from "../controllers/blog controllers/getComments.js";
 import { getBlogEngagement } from "../controllers/blog controllers/getBlogEngagements.js";
-
+import { authenticateUser } from "../middlewares/authenticateUser.js";
 const router = Router();
 
 router.get("/all-blogs", getAllBlogs);

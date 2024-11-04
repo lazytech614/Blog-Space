@@ -8,6 +8,8 @@ import blogRoutes from "./routes/blogRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import cookieParser from "cookie-parser";
+import { authenticateUser } from "./middlewares/authenticateUser.js";
+authenticateUser;
 
 dotenv.config();
 

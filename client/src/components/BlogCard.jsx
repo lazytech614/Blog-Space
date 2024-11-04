@@ -36,6 +36,35 @@ const BlogCard = ({ id,title, category, post, image }) => {
     }
   };
 
+  const handleReactClick = async (isLike) => {
+    const userId = JSON.parse(localStorage.getItem("userDetails"))?.userId || null;
+    if (!userId) {
+      toast.error("Please login to react");
+      return;
+    }
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/blogs/react-blog/${userId}/${id}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ isLike })
+        }
+      ).then((res) => res.json());
+
+      if (response.success) {
+        toast.success(response.message);
+        isLike ? setLikesCount(likesCount + 1) : setDislikesCount(dislikesCount + 1);
+      } else {
+        console.error(response.message); 
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
     fetchEngagementCounts(id)
   }, [])
@@ -61,11 +90,11 @@ const BlogCard = ({ id,title, category, post, image }) => {
         <div className='flex justify-between items-center'>
           <div className='flex justify-center items-center gap-3'>
             <div className='flex gap-1'>
-              <img className='w-[20px] cursor-pointer' src={likeIcon} alt="" /> 
+              <img onClick={() => handleReactClick(true)} className='w-[20px] cursor-pointer' src={likeIcon} alt="" /> 
               <span className='text-[12px] text-gray-400'>{likesCount}</span>
             </div>
             <div className='flex gap-1'>
-              <img className='w-[20px] cursor-pointer' src={dislikeIcon} alt="" />
+              <img onClick={() => handleReactClick(false)} className='w-[20px] cursor-pointer' src={dislikeIcon} alt="" />
               <span className='text-[12px] text-gray-400'>{dislikesCount}</span>
             </div>
           </div>

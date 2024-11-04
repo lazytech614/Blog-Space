@@ -4,6 +4,13 @@ export const addComment = async (req, res) => {
   const { userId, blogId } = req.params;
   const { content } = req.body;
 
+  if (!userId || !blogId) {
+    return res.status(401).json({
+      success: 0,
+      message: "User is unauthorised",
+    });
+  }
+
   if (!content) {
     return res.status(400).json({
       success: 0,

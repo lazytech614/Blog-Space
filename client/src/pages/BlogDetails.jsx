@@ -39,7 +39,11 @@ const BlogDetails = () => {
   };
 
   const handleReactClick = async (isLike) => {
-    const userId = JSON.parse(localStorage.getItem("userDetails")).userId;
+    const userId = JSON.parse(localStorage.getItem("userDetails"))?.userId || null;
+    if (!userId) {
+      toast.error("Please login to react");
+      return;
+    }
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_BASE_URL}/api/blogs/react-blog/${userId}/${id}`,
@@ -65,7 +69,15 @@ const BlogDetails = () => {
 
   const handleCommentClick = async (e) => {
     e.preventDefault();
-    const userId = JSON.parse(localStorage.getItem("userDetails")).userId;
+    const userId = JSON.parse(localStorage.getItem("userDetails"))?.userId || null;
+    if(!commentContent){
+      toast.error("Comment cannot be empty");
+      return;
+    }
+    if(!userId){
+      toast.error("Please login to add a comment");
+      return;
+    }
     const content = commentContent;
     try {
       setIsLoading(true);

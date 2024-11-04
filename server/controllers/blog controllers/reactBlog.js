@@ -4,6 +4,13 @@ export const reactBlog = async (req, res) => {
   const { userId, blogId } = req.params;
   const { isLike } = req.body; // `isLike` will be true for like, false for dislike
 
+  if (!userId || !blogId) {
+    return res.status(401).json({
+      success: 0,
+      message: "User is unauthorised",
+    });
+  }
+
   try {
     // Check if the user has already liked or disliked the post
     const result = await client.query(
