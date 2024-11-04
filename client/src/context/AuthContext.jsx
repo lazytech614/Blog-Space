@@ -15,7 +15,7 @@ export const AuthContextProvider = ({children}) => {
         const checkSubscription = async () => {
             if (authUser) {
                 try {
-                    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/check-subscription/${authUser}`);
+                    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/check-subscription/${authUser.username}`);
                     if (response.ok) {
                         const data = await response.json();
                         setIsSubscribed(data.isSubscribed);

@@ -6,14 +6,14 @@ import dislikeIcon from "/thumb-down-line.svg"
 import commentIcon from "/discuss-fill.svg"
 import DOMPurify from 'dompurify';
 
-const BlogCard = ({ title, category, post, image }) => {
+const BlogCard = ({ id,title, category, post, image }) => {
   const navigate = useNavigate();
 
   const cleanHtml = DOMPurify.sanitize(post);
 
   const handleReadMore = () => {
     navigate('/blog-details', {
-      state: { title, category, post, image },
+      state: { id,title, category, post, image },
     });
   };
 

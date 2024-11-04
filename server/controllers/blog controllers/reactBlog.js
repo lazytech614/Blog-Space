@@ -3,7 +3,6 @@ import { client } from "../../db/connection.js";
 export const reactBlog = async (req, res) => {
   const { userId, postId } = req.params;
   const { isLike } = req.body; // `isLike` will be true for like, false for dislike
-  console.log(isLike);
 
   try {
     // Check if the user has already liked or disliked the post

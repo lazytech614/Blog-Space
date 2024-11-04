@@ -5,12 +5,40 @@ import dislikeIcon from "/thumb-down-line.svg";
 import sendIcon from "/send-plane-fill.svg";
 import Comment from '../components/Comment';
 import DOMPurify from 'dompurify';
+import toast from 'react-hot-toast';
 
 const BlogDetails = () => {
   const location = useLocation();
-  const { title, category, post, image } = location.state || {};
+  const { id,title, category, post, image } = location.state || {};
 
   const cleanHtml = DOMPurify.sanitize(post);
+
+  const handleReactClick = async(isLike) => {
+    const userId = JSON.parse(localStorage.getItem("userDetails")).userId;
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/blogs/react-blog/${userId}/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ isLike }), 
+        }
+      ).then((res) => res.json());
+
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        console.error(response.message); 
+        toast.error(response.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error(error.message);
+    }
+    
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,11 +58,11 @@ const BlogDetails = () => {
             <div className='w-full h-[1px] bg-black my-4'></div>
             <div className='flex items-start gap-3'>
               <div>
-                <img className='w-[30px] cursor-pointer' src={likeIcon} alt="" />
+                <img onClick={() => handleReactClick(true)} className='w-[30px] cursor-pointer' src={likeIcon} alt="" />
                 <span className='text-xs'>1.2k likes</span>
               </div>
               <div>
-                <img className='w-[30px] cursor-pointer' src={dislikeIcon} alt="" />
+                <img onClick={() => handleReactClick(false)} className='w-[30px] cursor-pointer' src={dislikeIcon} alt="" />
                 <span className='text-xs'>19k dislikes</span>
               </div>
             </div>
