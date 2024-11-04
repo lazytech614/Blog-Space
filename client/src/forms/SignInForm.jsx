@@ -29,11 +29,11 @@ const SignInForm = ({setIsOpenSignInModal}) => {
         try{
             setIsLoading(true)
             const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/signin`, {
+                credentials: "include",
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                credentials: "include",
                 body: JSON.stringify(formData)
             }).then((res) => res.json())
 

@@ -23,7 +23,11 @@ const BlogCard = ({ id,title, category, post, image }) => {
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_BASE_URL}/api/blogs/get-blog-engagements/${id}`,
-        { method: "GET", headers: { "Content-Type": "application/json" } }
+        {   
+            credentials: "include",
+            method: "GET",
+            headers: { "Content-Type": "application/json" }
+        }
       ).then((res) => res.json());
 
       if (response.success) {
