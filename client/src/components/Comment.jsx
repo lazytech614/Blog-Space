@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import likeIcon from "/thumb-up-line.svg";
 import dislikeIcon from "/thumb-down-line.svg";
+import getFormattedDate from '../utils/getFormattedDate';
 
 const Comment = ({ commentator, content, date }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -8,18 +9,6 @@ const Comment = ({ commentator, content, date }) => {
   const handleToggleExpand = () => {
     setIsExpanded((prev) => !prev);
   };
-
-  const getFormattedDate = (dateString) => {
-    const isoDate = dateString;
-    const date = new Date(isoDate);
-
-    const day = String(date.getUTCDate()).padStart(2, '0');
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0'); // Months are 0-indexed
-    const year = date.getUTCFullYear();
-
-    const formattedDate = `${day}-${month}-${year}`;
-    return formattedDate
-  }
 
   const formattedDate = getFormattedDate(date);
 

@@ -6,6 +6,7 @@ import upload from "../utils/uploadBlogImage.js";
 import { reactBlog } from "../controllers/blog controllers/reactBlog.js";
 import { addComment } from "../controllers/blog controllers/addComment.js";
 import { getComments } from "../controllers/blog controllers/getComments.js";
+import { getBlogEngagement } from "../controllers/blog controllers/getBlogEngagements.js";
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.delete("/delete-blog/:id", deleteBlog);
 router.post("/react-blog/:userId/:blogId", reactBlog);
 router.post("/add-comment/:userId/:blogId", addComment);
 router.get("/get-comments/:blogId", getComments);
+router.get("/get-blog-engagements/:blogId", getBlogEngagement);
 
 export default router;

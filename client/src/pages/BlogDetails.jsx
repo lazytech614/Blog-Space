@@ -9,29 +9,50 @@ import toast from 'react-hot-toast';
 
 const BlogDetails = () => {
   const location = useLocation();
-  const { id,title, category, post, image } = location.state || {};
-  const [commentContent, setCommentContent] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
-  const [commments, setCommments] = useState([])
+  const { id, title, category, post, image } = location.state || {};
+  const [commentContent, setCommentContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [likesCount, setLikesCount] = useState(0);
+  const [dislikesCount, setDislikesCount] = useState(0);
+  const [commentsCount, setCommentsCount] = useState(0);
 
   const cleanHtml = DOMPurify.sanitize(post);
 
-  const handleReactClick = async(isLike) => {
+  const fetchEngagementCounts = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/blogs/get-blog-engagements/${id}`,
+        { method: "GET", headers: { "Content-Type": "application/json" } }
+      ).then((res) => res.json());
+
+      if (response.success) {
+        setLikesCount(response.data.like_count);
+        setDislikesCount(response.data.dislike_count);
+        setCommentsCount(response.data.comment_count);
+      } else {
+        console.error(response.message);
+      }
+    } catch (error) {
+      console.error("Error fetching engagement counts:", error);
+    }
+  };
+
+  const handleReactClick = async (isLike) => {
     const userId = JSON.parse(localStorage.getItem("userDetails")).userId;
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_BASE_URL}/api/blogs/react-blog/${userId}/${id}`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ isLike }), 
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ isLike })
         }
       ).then((res) => res.json());
 
       if (response.success) {
         toast.success(response.message);
+        isLike ? setLikesCount(likesCount + 1) : setDislikesCount(dislikesCount + 1);
       } else {
         console.error(response.message); 
         toast.error(response.message);
@@ -40,28 +61,27 @@ const BlogDetails = () => {
       console.error("Error:", error);
       toast.error(error.message);
     }
-    
   };
 
-  const handleCommentClick = async(e) => {
+  const handleCommentClick = async (e) => {
     e.preventDefault();
     const userId = JSON.parse(localStorage.getItem("userDetails")).userId;
     const content = commentContent;
     try {
-      setIsLoading(true)
+      setIsLoading(true);
       const response = await fetch(
         `${import.meta.env.VITE_API_BASE_URL}/api/blogs/add-comment/${userId}/${id}`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ content }),
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ content })
         }
       ).then((res) => res.json());
 
       if (response.success) {
         toast.success(response.message);
+        setCommentsCount(commentsCount + 1);
+        fetchComments(); // Refresh comments list
       } else {
         console.error(response.message); 
         toast.error(response.message);
@@ -69,39 +89,34 @@ const BlogDetails = () => {
     } catch (error) {
       console.error("Network or server error:", error);
       toast.error(error.message);
-    } finally{
-      setIsLoading(false)
-      setCommentContent("")
+    } finally {
+      setIsLoading(false);
+      setCommentContent("");
+    }
+  };
+
+  const fetchComments = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/blogs/get-comments/${id}`,
+        { method: "GET", headers: { "Content-Type": "application/json" } }
+      ).then((res) => res.json());
+
+      if (response.success) {
+        setComments(response.data);
+      } else {
+        console.error(response.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    const fetchComments = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/api/blogs/get-comments/${id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        ).then((res) => res.json());
-
-        if (response.success) {
-          setCommments(response.data);
-        } else {
-          console.error(response.message);
-        }
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
     fetchComments();
-  }, [commments]);
+    fetchEngagementCounts();
+  }, []);
 
   return (
     <div className='min-h-[calc(100vh-200px)] px-4 sm:px-10 md:px-20 py-6 lg:py-0 flex justify-center items-center'>
@@ -117,12 +132,12 @@ const BlogDetails = () => {
             <div className='w-full h-[1px] bg-black my-4'></div>
             <div className='flex items-start gap-3'>
               <div>
-                <img onClick={() => handleReactClick(true)} className='w-[30px] cursor-pointer' src={likeIcon} alt="" />
-                <span className='text-xs'>1.2k likes</span>
+                <img onClick={() => handleReactClick(true)} className='w-[30px] cursor-pointer' src={likeIcon} alt="like" />
+                <span className='text-xs'>{likesCount} likes</span>
               </div>
               <div>
-                <img onClick={() => handleReactClick(false)} className='w-[30px] cursor-pointer' src={dislikeIcon} alt="" />
-                <span className='text-xs'>19k dislikes</span>
+                <img onClick={() => handleReactClick(false)} className='w-[30px] cursor-pointer' src={dislikeIcon} alt="dislike" />
+                <span className='text-xs'>{dislikesCount} dislikes</span>
               </div>
             </div>
           </div>
@@ -130,7 +145,7 @@ const BlogDetails = () => {
         <div className='max-h-[70vh] w-full lg:w-[40%] lg:ps-4 flex flex-col gap-4'>
           <div>
             <div className='w-[60px] h-[60px] rounded-full overflow-hidden flex'>
-              <img className='w-full h-full' src="https://i.pinimg.com/originals/df/5f/5b/df5f5b1b174a2b4b6026cc6c8f9395c1.jpg" alt="" />
+              <img className='w-full h-full' src="https://i.pinimg.com/originals/df/5f/5b/df5f5b1b174a2b4b6026cc6c8f9395c1.jpg" alt="User Avatar" />
             </div>
             <h3 className='text-xl font-semibold'>Rupanjan De</h3>
             <p className='text-sm'>20th July, 2022</p>
@@ -146,19 +161,19 @@ const BlogDetails = () => {
               placeholder="Write a comment" 
             />
             <button className='w-[10%] h-full flex justify-center items-center cursor-pointer' disabled={isLoading}>
-              <img className='w-[20px]' src={sendIcon} alt="" />
+              <img className='w-[20px]' src={sendIcon} alt="Send" />
             </button>
           </form>
           <div className='w-full flex flex-col gap-4'>
             <div className='shadow-[-1px_1px_2px_rgba(0,0,0,0.25)] rounded-md p-2 flex flex-col gap-1'>
-              {commments.length === 0 ? (
+              {comments.length === 0 ? (
                 <p className='text-sm'>No comments yet</p>
               ) : (
-                <h3 className='text-md font-semibold'>Comments</h3>
+                <h3 className='text-md font-semibold'>Comments ({commentsCount})</h3>
               )}
             </div>
             <div className='flex flex-col gap-2 overflow-y-auto h-[340px] scrollbar-hidden shadow-[-1px_1px_2px_rgba(0,0,0,0.25)] rounded-md p-2'>
-              {commments.map((comment) => (
+              {comments.map((comment) => (
                 <Comment 
                   key={comment.comment_id}
                   commentator={comment.name} 
