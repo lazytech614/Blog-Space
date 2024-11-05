@@ -125,7 +125,7 @@ const UploadBlog = () => {
                                     ['clean']                                        
                                 ]
                             }}
-                            className='bg-white border border-black rounded-md'
+                            className='bg-white border border-black rounded-md max-h-[300px] overflow-y-auto scrollbar-hidden'
                         />
                     </div>
                     <p className='mb-2 text-[12px] sm:text-[16px]'>Blog category</p>
