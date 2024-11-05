@@ -32,7 +32,9 @@ const BlogDetails = () => {
   };
 
   const handleReactClick = async (isLike) => {
-    await react(isLike, id)
+    await react(status,isLike, id)
+    // checkReaction(id)
+    // fetchEngagementCounts();
   };
 
   const handleCommentClick = async (e) => {
@@ -49,7 +51,7 @@ const BlogDetails = () => {
     checkReaction(id)
     fetchComments();
     fetchEngagementCounts();
-  }, []);
+  }, [likesCount, dislikesCount, commentsCount]);
 
   return (
     <div className='min-h-[calc(100vh-200px)] px-4 sm:px-10 md:px-20 py-6 lg:py-0 flex justify-center items-center'>
@@ -66,11 +68,11 @@ const BlogDetails = () => {
             <div className='flex items-start gap-3'>
               <div>
                 <img onClick={() => handleReactClick(true)} className='w-[30px] cursor-pointer' src={status === true ? likeIconFill : likeIcon} alt="like" />
-                <span className='text-xs'>{likesCount} likes</span>
+                {/* <span className='text-xs'>{likesCount} likes</span> */}
               </div>
               <div>
                 <img onClick={() => handleReactClick(false)} className='w-[30px] cursor-pointer' src={status === false ? dislikeIconFill : dislikeIcon} alt="dislike" />
-                <span className='text-xs'>{dislikesCount} dislikes</span>
+                {/* <span className='text-xs'>{dislikesCount} dislikes</span> */}
               </div>
             </div>
           </div>

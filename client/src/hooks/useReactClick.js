@@ -1,9 +1,12 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import useCheckReaction from "./useCheckReaction";
 
 const useReactClick = () => {
   const [likesCount, setLikesCount] = useState(0);
   const [dislikesCount, setDislikesCount] = useState(0);
+  // const { checkReaction, status } = useCheckReaction();
+
   const userId =
     JSON.parse(localStorage.getItem("userDetails"))?.userId || null;
   if (!userId) {
@@ -11,7 +14,7 @@ const useReactClick = () => {
     return;
   }
 
-  const react = async (isLike, id) => {
+  const react = async (status, isLike, id) => {
     try {
       const response = await fetch(
         `${
@@ -25,10 +28,25 @@ const useReactClick = () => {
       ).then((res) => res.json());
 
       if (response.success) {
+        // console.log(status);
         toast.success(response.message);
-        isLike
-          ? setLikesCount(likesCount + 1)
-          : setDislikesCount(dislikesCount + 1);
+        // isLike
+        //   ? setLikesCount(likesCount + 1)
+        //   : setDislikesCount(dislikesCount + 1);
+
+        if (isLike) {
+          if (status === "none") setLikesCount(likesCount + 1);
+          if (status === true) setLikesCount(likesCount - 1);
+          if (status === false)
+            setLikesCount(likesCount + 1) &&
+              setDislikesCount(dislikesCount - 1);
+        } else {
+          if (status === "none") setDislikesCount(dislikesCount + 1);
+          if (status === true)
+            setLikesCount(likesCount - 1) &&
+              setDislikesCount(dislikesCount + 1);
+          if (status === false) setDislikesCount(dislikesCount - 1);
+        }
       } else {
         console.error(response.message);
         toast.error(response.message);

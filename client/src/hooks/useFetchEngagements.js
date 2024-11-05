@@ -15,7 +15,6 @@ const useFetchEngagements = () => {
         }/api/blogs/get-blog-engagements/${id}`,
         { method: "GET", headers: { "Content-Type": "application/json" } }
       ).then((res) => res.json());
-
       if (response.success) {
         setLikesCount(response.data.like_count);
         setDislikesCount(response.data.dislike_count);

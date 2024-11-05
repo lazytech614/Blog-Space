@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
-import arrowRightImage from "/arrow-right-line.svg"
 import likeIcon from "/thumb-up-line.svg"
+import likeIconFill from "/thumb-up-fill.svg"
 import dislikeIcon from "/thumb-down-line.svg"
-import commentIcon from "/discuss-fill.svg"
+import dislikeIconFill from "/thumb-down-fill.svg"
 import DOMPurify from 'dompurify';
 import toast from 'react-hot-toast'
+import useCheckReaction from '../hooks/useCheckReaction'
 
 const BlogCard = ({ id,title, category, post, image }) => {
   const [likesCount, setLikesCount] = useState(0);
@@ -13,6 +14,8 @@ const BlogCard = ({ id,title, category, post, image }) => {
   const navigate = useNavigate();
   const cleanHtml = DOMPurify.sanitize(post);
 
+  const {status, checkReaction} = useCheckReaction(id)
+  
   const handleReadMore = () => {
     navigate('/blog-details', {
       state: { id,title, category, post, image },
@@ -71,6 +74,7 @@ const BlogCard = ({ id,title, category, post, image }) => {
   };
 
   useEffect(() => {
+    checkReaction(id)
     fetchEngagementCounts(id)
   }, [])
 
@@ -95,12 +99,12 @@ const BlogCard = ({ id,title, category, post, image }) => {
         <div className='flex justify-between items-center'>
           <div className='flex justify-center items-center gap-3'>
             <div className='flex gap-1'>
-              <img onClick={() => handleReactClick(true)} className='w-[20px] cursor-pointer' src={likeIcon} alt="" /> 
-              <span className='text-[12px] text-gray-400'>{likesCount}</span>
+              <img onClick={() => handleReactClick(true)} className='w-[20px] cursor-pointer' src={status !== "none" ? status ? likeIconFill : likeIcon : likeIcon} alt="" /> 
+              {/* <span className='text-[12px] text-gray-400'>{likesCount}</span> */}
             </div>
             <div className='flex gap-1'>
-              <img onClick={() => handleReactClick(false)} className='w-[20px] cursor-pointer' src={dislikeIcon} alt="" />
-              <span className='text-[12px] text-gray-400'>{dislikesCount}</span>
+              <img onClick={() => handleReactClick(false)} className='w-[20px] cursor-pointer' src={status !== "none" ? !status ? dislikeIconFill : dislikeIcon : dislikeIcon} alt="" />
+              {/* <span className='text-[12px] text-gray-400'>{dislikesCount}</span> */}
             </div>
           </div>
         </div>
