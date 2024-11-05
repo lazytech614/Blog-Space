@@ -3,7 +3,6 @@ import { useState } from "react";
 const useCheckSubscription = () => {
   const checkSubscription = async (authUser, setIsSubscribed) => {
     if (authUser) {
-      console.log(authUser);
       try {
         const response = await fetch(
           `${import.meta.env.VITE_API_BASE_URL}/api/user/check-subscription/${

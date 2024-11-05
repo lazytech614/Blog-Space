@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import useGetAllBlogs from "../hooks/useGetAllBlogs";
 
 export const FeedContext = createContext();
 
@@ -8,18 +9,10 @@ export const useFeedContext = () => {
 
 export const FeedContextProvider = ({ children }) => {
     const [feed, setFeed] = useState([]);
+    const {fetchFeed} = useGetAllBlogs();
 
     useEffect(() => {
-        const fetchFeed = async () => {
-            try {   
-                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/all-blogs`, {
-                    credentials: "include",
-                }).then((res) => res.json()).then((data) => setFeed(data.data));
-            } catch (error) {
-                console.error("Error fetching feed:", error);
-            }
-        };
-        fetchFeed();
+        fetchFeed(setFeed);
     }, []);
 
     return (
