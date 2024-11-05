@@ -8,17 +8,18 @@ import DOMPurify from 'dompurify';
 import toast from 'react-hot-toast';
 import useReactClick from '../hooks/useReactClick';
 import useFetchEngagements from '../hooks/useFetchEngagements';
+import useAddComment from '../hooks/useAddComment';
 
 const BlogDetails = () => {
   const location = useLocation();
   const { id, title, category, post, image } = location.state || {};
   const [commentContent, setCommentContent] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [comments, setComments] = useState([]);
-  const [commentsCount, setCommentsCount] = useState(0);
+  
   const cleanHtml = DOMPurify.sanitize(post);
   const {react, likesCount, dislikesCount, setLikesCount, setDislikesCount} = useReactClick()
   const {fetchEngagements} = useFetchEngagements()
+  const {addComment, isLoading, commentsCount, setCommentsCount} = useAddComment()
 
   const fetchEngagementCounts = async () => {
     await fetchEngagements(id,setCommentsCount, setLikesCount, setDislikesCount)
@@ -30,42 +31,7 @@ const BlogDetails = () => {
 
   const handleCommentClick = async (e) => {
     e.preventDefault();
-    const userId = JSON.parse(localStorage.getItem("userDetails"))?.userId || null;
-    if(!commentContent){
-      toast.error("Comment cannot be empty");
-      return;
-    }
-    if(!userId){
-      toast.error("Please login to add a comment");
-      return;
-    }
-    const content = commentContent;
-    try {
-      setIsLoading(true);
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/blogs/add-comment/${userId}/${id}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ content })
-        }
-      ).then((res) => res.json());
-
-      if (response.success) {
-        toast.success(response.message);
-        setCommentsCount(commentsCount + 1);
-        fetchComments(); // Refresh comments list
-      } else {
-        console.error(response.message); 
-        toast.error(response.message);
-      }
-    } catch (error) {
-      console.error("Network or server error:", error);
-      toast.error(error.message);
-    } finally {
-      setIsLoading(false);
-      setCommentContent("");
-    }
+    await addComment(id,commentContent, setCommentContent, fetchComments)
   };
 
   const fetchComments = async () => {
