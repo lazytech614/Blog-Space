@@ -5,21 +5,22 @@ import dislikeIcon from "/thumb-down-line.svg";
 import sendIcon from "/send-plane-fill.svg";
 import Comment from '../components/Comment';
 import DOMPurify from 'dompurify';
-import toast from 'react-hot-toast';
 import useReactClick from '../hooks/useReactClick';
 import useFetchEngagements from '../hooks/useFetchEngagements';
 import useAddComment from '../hooks/useAddComment';
+import useFetchComments from '../hooks/useFetchComments';
 
 const BlogDetails = () => {
   const location = useLocation();
   const { id, title, category, post, image } = location.state || {};
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
-  
   const cleanHtml = DOMPurify.sanitize(post);
+
   const {react, likesCount, dislikesCount, setLikesCount, setDislikesCount} = useReactClick()
   const {fetchEngagements} = useFetchEngagements()
   const {addComment, isLoading, commentsCount, setCommentsCount} = useAddComment()
+  const {fetchAllComments} = useFetchComments()
 
   const fetchEngagementCounts = async () => {
     await fetchEngagements(id,setCommentsCount, setLikesCount, setDislikesCount)
@@ -35,20 +36,7 @@ const BlogDetails = () => {
   };
 
   const fetchComments = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/blogs/get-comments/${id}`,
-        { method: "GET", headers: { "Content-Type": "application/json" } }
-      ).then((res) => res.json());
-
-      if (response.success) {
-        setComments(response.data);
-      } else {
-        console.error(response.message);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    await fetchAllComments(id,setComments)
   };
 
   useEffect(() => {
