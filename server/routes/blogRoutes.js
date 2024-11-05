@@ -8,6 +8,8 @@ import { addComment } from "../controllers/blog controllers/addComment.js";
 import { getComments } from "../controllers/blog controllers/getComments.js";
 import { getBlogEngagement } from "../controllers/blog controllers/getBlogEngagements.js";
 import { authenticateUser } from "../middlewares/authenticateUser.js";
+import { checkReaction } from "../controllers/blog controllers/checkReaction.js";
+
 const router = Router();
 
 router.get("/all-blogs", getAllBlogs);
@@ -17,5 +19,6 @@ router.post("/react-blog/:userId/:blogId", reactBlog);
 router.post("/add-comment/:userId/:blogId", addComment);
 router.get("/get-comments/:blogId", getComments);
 router.get("/get-blog-engagements/:blogId", getBlogEngagement);
+router.get("/check-reaction/:userId/:postId", checkReaction);
 
 export default router;
