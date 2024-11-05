@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import closeIcon from "/close-large-fill.svg"
-import toast from 'react-hot-toast'
-import { useAuthContext } from '../context/AuthContext'
+import useSignUp from '../hooks/useSignUp'
 
 const SignUpForm = ({setIsOpenSignUpModal}) => {
     const [formData, setFormData] = useState({
@@ -11,10 +10,7 @@ const SignUpForm = ({setIsOpenSignUpModal}) => {
         password: '',
         confirmPassword: ''
     })
-
-    const [isLoading, setIsLoading] = useState(false)
-
-    const {setAuthUser} = useAuthContext()
+    const {isLoading,signUp} = useSignUp()
 
     const handleCloseIconClick = () => {
         setIsOpenSignUpModal(false)
@@ -30,34 +26,7 @@ const SignUpForm = ({setIsOpenSignUpModal}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        try{
-            setIsLoading(true)
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/signup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                credentials: 'include',
-                body: JSON.stringify(formData)
-            }).then((res) => res.json())
-            if(response.success){
-                setIsOpenSignUpModal(false)
-                const userDetails = {
-                    username: formData.username,
-                    userId: response.userId, 
-                };
-                localStorage.setItem("userDetails", JSON.stringify(userDetails));
-                setAuthUser(formData.username)
-                toast.success(response.message)
-            }else{
-                toast.error(response.message)
-            }
-        }catch(err){
-            console.log(err.message);
-            toast.error(err.message);
-        }finally{
-            setIsLoading(false)
-        }
+        await signUp(formData, setIsOpenSignUpModal)
     }
 
 
@@ -93,7 +62,7 @@ const SignUpForm = ({setIsOpenSignUpModal}) => {
                 <label htmlFor="email">Enter your email</label>
                 <input 
                     id='email' 
-                    type="email" 
+                    type="text" 
                     placeholder='E-mail'
                     name='email'
                     value={formData.email}
