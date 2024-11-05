@@ -34,7 +34,7 @@ const useSignIn = () => {
           userId: response.userId,
         };
         localStorage.setItem("userDetails", JSON.stringify(userDetails));
-        setAuthUser(formData.username);
+        setAuthUser(userDetails);
         toast.success(response.message);
       } else {
         toast.error(response.message);
