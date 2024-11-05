@@ -1,16 +1,12 @@
 import React, {useState} from 'react'
 import closeIcon from "/close-large-fill.svg"
-import toast from 'react-hot-toast'
-import { useAuthContext } from '../context/AuthContext'
+import useSignIn from '../hooks/useSignIn'
 
 const SignInForm = ({setIsOpenSignInModal}) => {
     const [formData, setFormData] = useState({
         username: '',
         password: ''
     })
-    const [isLoading, setIsLoading] = useState(false)
-
-    const {setAuthUser} = useAuthContext()
 
     const handleCloseIconClick = () => {
         setIsOpenSignInModal(false)
@@ -24,38 +20,11 @@ const SignInForm = ({setIsOpenSignInModal}) => {
         })
     }
 
+    const {signIn, isLoading} = useSignIn()
+
     const handleSubmit = async (e) => {
         e.preventDefault()
-        try{
-            setIsLoading(true)
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/signin`, {
-                credentials: "include",
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData)
-            }).then((res) => res.json())
-
-            if(response.success){
-                setIsOpenSignInModal(false)
-                const userDetails = {
-                    username: formData.username,
-                    userId: response.userId, 
-                };        
-                localStorage.setItem("userDetails", JSON.stringify(userDetails));
-                setAuthUser(formData.username)
-                toast.success(response.message)
-            }else{
-                toast.error(response.message)
-            }
-            
-        }catch(err){
-            console.log(err.message);
-            toast.error(err.message);
-        }finally{
-            setIsLoading(false)
-        }
+        await signIn(formData, setIsOpenSignInModal)
     }
 
   return (

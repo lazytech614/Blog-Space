@@ -53,7 +53,7 @@ const Hero = () => {
                 placeholder='Enter your email' 
                 className='h-full w-[70%] bg-transparent text-[12px] sm:text-[16px] md:text-[20px] outline-none px-6'
             />
-            <button className='w-[30%] h-full border-l border-black text-[12px] sm:text-[16px] md:text-[20px] hover:bg-black hover:text-white'>Subscribe</button>
+            <button className='w-[30%] h-full border-l border-black text-[12px] sm:text-[16px] md:text-[20px] sm:hover:bg-black sm:hover:text-white'>Subscribe</button>
         </form>}
     </div>
   )
