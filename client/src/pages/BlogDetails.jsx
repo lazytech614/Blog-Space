@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import likeIcon from "/thumb-up-line.svg";
+import likeIconFill from "/thumb-up-fill.svg";
 import dislikeIcon from "/thumb-down-line.svg";
+import dislikeIconFill from "/thumb-down-fill.svg";
 import sendIcon from "/send-plane-fill.svg";
 import Comment from '../components/Comment';
 import DOMPurify from 'dompurify';
@@ -9,6 +11,7 @@ import useReactClick from '../hooks/useReactClick';
 import useFetchEngagements from '../hooks/useFetchEngagements';
 import useAddComment from '../hooks/useAddComment';
 import useFetchComments from '../hooks/useFetchComments';
+import useCheckReaction from '../hooks/useCheckReaction';
 
 const BlogDetails = () => {
   const location = useLocation();
@@ -21,6 +24,8 @@ const BlogDetails = () => {
   const {fetchEngagements} = useFetchEngagements()
   const {addComment, isLoading, commentsCount, setCommentsCount} = useAddComment()
   const {fetchAllComments} = useFetchComments()
+  const {checkReaction, status} = useCheckReaction()
+
 
   const fetchEngagementCounts = async () => {
     await fetchEngagements(id,setCommentsCount, setLikesCount, setDislikesCount)
@@ -41,6 +46,7 @@ const BlogDetails = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    checkReaction(id)
     fetchComments();
     fetchEngagementCounts();
   }, []);
@@ -59,11 +65,11 @@ const BlogDetails = () => {
             <div className='w-full h-[1px] bg-black my-4'></div>
             <div className='flex items-start gap-3'>
               <div>
-                <img onClick={() => handleReactClick(true)} className='w-[30px] cursor-pointer' src={likeIcon} alt="like" />
+                <img onClick={() => handleReactClick(true)} className='w-[30px] cursor-pointer' src={status === true ? likeIconFill : likeIcon} alt="like" />
                 <span className='text-xs'>{likesCount} likes</span>
               </div>
               <div>
-                <img onClick={() => handleReactClick(false)} className='w-[30px] cursor-pointer' src={dislikeIcon} alt="dislike" />
+                <img onClick={() => handleReactClick(false)} className='w-[30px] cursor-pointer' src={status === false ? dislikeIconFill : dislikeIcon} alt="dislike" />
                 <span className='text-xs'>{dislikesCount} dislikes</span>
               </div>
             </div>
