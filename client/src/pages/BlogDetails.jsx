@@ -7,6 +7,7 @@ import Comment from '../components/Comment';
 import DOMPurify from 'dompurify';
 import toast from 'react-hot-toast';
 import useReactClick from '../hooks/useReactClick';
+import useFetchEngagements from '../hooks/useFetchEngagements';
 
 const BlogDetails = () => {
   const location = useLocation();
@@ -17,24 +18,10 @@ const BlogDetails = () => {
   const [commentsCount, setCommentsCount] = useState(0);
   const cleanHtml = DOMPurify.sanitize(post);
   const {react, likesCount, dislikesCount, setLikesCount, setDislikesCount} = useReactClick()
+  const {fetchEngagements} = useFetchEngagements()
 
   const fetchEngagementCounts = async () => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/api/blogs/get-blog-engagements/${id}`,
-        { method: "GET", headers: { "Content-Type": "application/json" } }
-      ).then((res) => res.json());
-
-      if (response.success) {
-        setLikesCount(response.data.like_count);
-        setDislikesCount(response.data.dislike_count);
-        setCommentsCount(response.data.comment_count);
-      } else {
-        console.error(response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching engagement counts:", error);
-    }
+    await fetchEngagements(id,setCommentsCount, setLikesCount, setDislikesCount)
   };
 
   const handleReactClick = async (isLike) => {
