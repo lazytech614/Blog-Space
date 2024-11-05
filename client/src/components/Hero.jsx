@@ -1,13 +1,15 @@
 import React, {useState} from 'react'
 import toast from 'react-hot-toast'
 import { useAuthContext } from '../context/AuthContext'
+import useSubscribe from '../hooks/useSubscribe'
 
 const Hero = () => {
   const [formData, setFormData] = useState({
     email: ""
   })
 
-  const {authUser,isSubscribed, setIsSubscribed} = useAuthContext()
+  const {isSubscribed} = useAuthContext()
+  const {subscribe} = useSubscribe()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -19,25 +21,7 @@ const Hero = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    try{
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/subscribe/${authUser}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-      })
-
-      if(response.ok){
-        setIsSubscribed(true)
-        toast.success("Thank you for subscribing!")
-        setFormData({
-          email: ""
-        })
-      }
-    }catch(err){
-      console.log(err.message);
-      toast.error(err.message);
-    }
+    subscribe( setFormData)
   }
 
   return (
