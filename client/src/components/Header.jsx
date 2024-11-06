@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import loginImage from "/login-box-line.svg"
 import logoutImage from "/logout-box-r-line.svg"
 import arrowRightImage from "/arrow-right-double-fill.svg"
+import searchIcon from "/search-line.svg"
 import menuImage from "/menu-3-line.svg"
 import closeImage from "/close-large-fill.svg"
 import Sidebar from './Sidebar'
@@ -43,21 +44,23 @@ const Header = () => {
 
   return (
     <nav className='sticky top-0 sm:h-[100px] px-4 sm:px-10 md:px-20 py-6 sm:py-0 bg-[#F7F4ED] w-full flex justify-between items-center shadow-[-1px_1px_4px_#000000] z-[10]'>
-       <div onClick={() => navigate("/")} className='text-[24px] sm:text-[32px] font-bold cursor-pointer flex justify-center items-center gap-2'>
-            <img className='w-6 sm:w-8 md:w-10' src="https://img.icons8.com/?size=200&id=OENhm99NTnV6&format=png" alt="" />
-            <span>Blog Space</span>
-            <div className='w-[300px] h-[40px] rounded-full overflow-hidden bg-white flex justify-between items-center text-[16px] font-normal'>
+       <div onClick={() => navigate("/")} className='text-[24px] sm:text-[32px] font-bold cursor-pointer flex flex-col md:flex-row justify-center items-start md:items-center md:gap-4'>
+            <div className='flex justify-center items-center gap-2'>
+                <img className='w-6 sm:w-8 md:w-10' src="https://img.icons8.com/?size=200&id=OENhm99NTnV6&format=png" alt="" />
+                <div>Blog Space</div>
+            </div>
+            {authUser && <div className='w-[200px] md:w-[300px] h-[30px] md:h-[40px] rounded-full overflow-hidden bg-white flex justify-between items-center text-[12px] md:text-[16px] font-normal'>
                 <input 
                     type="text" 
                     name='search'
                     value={searchTerm} // Bind the input value to searchTerm
                     onChange={handleSearchChange} // Handle changes
                     placeholder='Search for blog posts...'
-                    className='w-[80%] h-full px-4 outline-none'/>
+                    className='w-[80%] h-full px-4 outline-none '/>
                 <div className='flex justify-center items-center h-full w-[20%]'>
-                    <img src={arrowRightImage} alt="search" className='w-6' />
+                    <img src={searchIcon} alt="search" className='w-4 md:w-6' />
                 </div>
-            </div>
+            </div>}
        </div> 
        {authUser ? (
         <div className='hidden sm:flex gap-10'>
