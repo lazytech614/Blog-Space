@@ -5,13 +5,14 @@ import Navbar from '../components/Navbar'
 import BlogTableItem from '../components/BlogTableItem'
 import { WarningModal } from '../modal/WarningModal'
 import useGetAllBlogs from '../hooks/useGetAllBlogs'
+import useDeleteBlog from '../hooks/useDeleteBlog'
 
 const BlogList = () => {
-  
   const [selectedBlogId, setSelectedBlogId] = useState(null)
   const [isOpenWarningModal, setIsOpenWarningModal] = useState(false)
 
   const {getAllBlogs, blogList, setBlogList} = useGetAllBlogs()
+  const {deleteBlog} = useDeleteBlog()
 
   useEffect(() => {
     getAllBlogs()
@@ -23,24 +24,9 @@ const BlogList = () => {
     setIsOpenWarningModal(true)
   };
 
+  // Define the confirm delete function
   const confirmDelete = async() => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/delete-blog/${selectedBlogId}`, {
-        method: 'DELETE',
-      }).then((res) => res.json());
-
-      if (response.success) {
-        // Remove the deleted blog from the blogList
-        setBlogList((prevList) => prevList.filter((blog) => blog.id !== selectedBlogId));
-        toast.success(response.message);
-      } else {
-        toast.error(response.message);
-      }
-    } catch (error) {
-      toast.error("An error occurred while deleting the blog");
-    } finally{
-      setSelectedBlogId(null)
-    }
+    await deleteBlog(selectedBlogId, setSelectedBlogId, setBlogList)
   }
 
   return (
