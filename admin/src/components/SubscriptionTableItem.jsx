@@ -1,7 +1,7 @@
 import React from 'react'
 import getFormattedDate from '../utils/getFormattedDate'
 
-const SubscriptionTableItem = ({name,email, subscribed_at, onDelete}) => {
+const SubscriptionTableItem = ({name,email, subscribed_at, onDelete, setIsOpenWarningModal}) => {
   const formattedDate = getFormattedDate(subscribed_at);
   
   return (

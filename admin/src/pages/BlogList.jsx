@@ -3,9 +3,12 @@ import Sidebar from '../components/Sidebar'
 import toast from 'react-hot-toast'
 import Navbar from '../components/Navbar'
 import BlogTableItem from '../components/BlogTableItem'
+import { WarningModal } from '../modal/WarningModal'
 
 const BlogList = () => {
   const [blogList, setBlogList] = useState([])
+  const [selectedBlogId, setSelectedBlogId] = useState(null)
+  const [isOpenWarningModal, setIsOpenWarningModal] = useState(false)
 
   useEffect(() => {
     try {
@@ -26,22 +29,29 @@ const BlogList = () => {
 
   // Define the delete handler function
   const handleDelete = async (id) => {
+    setSelectedBlogId(id)
+    setIsOpenWarningModal(true)
+  };
+
+  const confirmDelete = async() => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/delete-blog/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/delete-blog/${selectedBlogId}`, {
         method: 'DELETE',
       }).then((res) => res.json());
 
       if (response.success) {
         // Remove the deleted blog from the blogList
-        setBlogList((prevList) => prevList.filter((blog) => blog.id !== id));
+        setBlogList((prevList) => prevList.filter((blog) => blog.id !== selectedBlogId));
         toast.success(response.message);
       } else {
         toast.error(response.message);
       }
     } catch (error) {
       toast.error("An error occurred while deleting the blog");
+    } finally{
+      setSelectedBlogId(null)
     }
-  };
+  }
 
   return (
     <div className='flex flex-col sm:flex-row'>
@@ -65,6 +75,11 @@ const BlogList = () => {
           </div>
         </div>
       </div>
+      <WarningModal 
+        warning="Are you sure you want to delete this blog?" 
+        isOpenWarningModal={isOpenWarningModal} 
+        setIsOpenWarningModal={setIsOpenWarningModal} 
+        onConfirmDelete={confirmDelete} />
     </div>
   )
 }

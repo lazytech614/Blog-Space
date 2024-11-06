@@ -95,6 +95,7 @@ const Subscriptions = () => {
         </div>
       </div>
       <WarningModal
+        warning="Are you sure you want to cancel the subscription?"
         isOpenWarningModal={isOpenWarningModal}
         setIsOpenWarningModal={setIsOpenWarningModal}
         onConfirmDelete={confirmDelete}
