@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import uploadIcon from '/upload-icon.png'
-import toast from 'react-hot-toast'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import useUploadBlog from '../hooks/useUploadBlog'
@@ -120,7 +119,9 @@ const UploadBlog = () => {
                         <option value="Lifestyle" className='text-black'>Lifestyle</option>
                         <option value="Science" className='text-black'>Science</option>
                     </select>
-                    <button className='px-8 py-2 w-fit mt-10 bg-white rounded-md border border-black shadow-[-5px_5px_0px_#000000] text-[12px] sm:text-[16px]' type="submit">Add Blog</button>
+                    <button className='px-8 py-2 w-fit mt-10 bg-white rounded-md border border-black shadow-[-5px_5px_0px_#000000] text-[12px] sm:text-[16px]' type="submit" disabled={isUploadLoading}>
+                        {isUploadLoading ? "Uploading..." : "Upload"}
+                    </button>
                 </form>
             </div>
         </div>
