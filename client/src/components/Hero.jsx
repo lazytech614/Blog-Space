@@ -20,7 +20,7 @@ const Hero = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    subscribe( setFormData)
+    subscribe( formData, setFormData)
   }
 
   return (

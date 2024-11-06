@@ -2,6 +2,15 @@ import { client } from "../../db/connection.js";
 
 export const subscribeUser = async (req, res) => {
   const { username } = req.params;
+  const email = req.body.email;
+  console.log(req.body);
+
+  if (!email) {
+    return res.status(404).json({
+      success: 0,
+      message: "Please provide the email",
+    });
+  }
 
   if (!username) {
     return res.status(404).json({
@@ -50,7 +59,7 @@ export const subscribeUser = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Subscription successful!", success: 1 });
+      .json({ message: "Thank you for subscribing", success: 1 });
   } catch (error) {
     console.error("Error subscribing user:", error);
     return res
