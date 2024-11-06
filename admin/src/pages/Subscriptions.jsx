@@ -4,37 +4,17 @@ import Navbar from '../components/Navbar';
 import SubscriptionTableItem from '../components/SubscriptionTableItem';
 import toast from 'react-hot-toast';
 import { WarningModal } from '../modal/WarningModal';
+import useGetAllSubscribers from '../hooks/useGetAllSubscribers';
 
 const Subscriptions = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [subscribers, setSubscribers] = useState([]);
   const [isOpenWarningModal, setIsOpenWarningModal] = useState(false);
   const [selectedSubscriberId, setSelectedSubscriberId] = useState(null);
 
+  const {getAllSubscribers, isLoading, subscribers} = useGetAllSubscribers()
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    try {
-      setIsLoading(true);
-      const fetchSubscribers = async () => {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/subscribers`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }).then((res) => res.json());
-
-        if (!response.success) {
-          toast.error(response.message || "Failed to fetch subscribers");
-          return;
-        }
-        setSubscribers(response.subscribers || []);
-      };
-      fetchSubscribers();
-    } catch (err) {
-      toast.error(err.message);
-    } finally {
-      setIsLoading(false);
-    }
+    getAllSubscribers()
   }, []);
 
   const handleDeleteClick = (id) => {
