@@ -3,10 +3,13 @@ import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import SubscriptionTableItem from '../components/SubscriptionTableItem';
 import toast from 'react-hot-toast';
+import { WarningModal } from '../modal/WarningModal';
 
 const Subscriptions = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [subscribers, setSubscribers] = useState([]);
+  const [isOpenWarningModal, setIsOpenWarningModal] = useState(false);
+  const [selectedSubscriberId, setSelectedSubscriberId] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -26,7 +29,7 @@ const Subscriptions = () => {
         }
         setSubscribers(response.subscribers || []);
       };
-      fetchSubscribers()
+      fetchSubscribers();
     } catch (err) {
       toast.error(err.message);
     } finally {
@@ -34,16 +37,22 @@ const Subscriptions = () => {
     }
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDeleteClick = (id) => {
+    setSelectedSubscriberId(id);
+    setIsOpenWarningModal(true);
+  };
+
+  const confirmDelete = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/cancel-subscription/${id}`,
-        { method: 'DELETE' }
-      ).then((res) => res.json());
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/cancel-subscription/${selectedSubscriberId}`, {
+        method: 'DELETE',
+      }).then((res) => res.json());
+
       if (response.success) {
-        setSubscribers(subscribers.filter((subscriber) => subscriber.id !== id));
+        setSubscribers(subscribers.filter((subscriber) => subscriber.id !== selectedSubscriberId));
         toast.success(response.message || "Subscription cancelled successfully");
-      }else{
+      } else {
         toast.error(response.message || "Failed to cancel subscription");
       }
     } catch (error) {
@@ -51,6 +60,7 @@ const Subscriptions = () => {
       toast.error(error.message);
     } finally {
       setIsLoading(false);
+      setSelectedSubscriberId(null);
     }
   };
 
@@ -76,7 +86,7 @@ const Subscriptions = () => {
             ) : (
               subscribers.map((subscriber) => (
                 <React.Fragment key={subscriber.id}>
-                  <SubscriptionTableItem {...subscriber} onDelete={() => handleDelete(subscriber.id)} />
+                  <SubscriptionTableItem {...subscriber} onDelete={() => handleDeleteClick(subscriber.id)} />
                   <div className='col-span-4 h-[2px] bg-black'></div>
                 </React.Fragment>
               ))
@@ -84,6 +94,11 @@ const Subscriptions = () => {
           </div>
         </div>
       </div>
+      <WarningModal
+        isOpenWarningModal={isOpenWarningModal}
+        setIsOpenWarningModal={setIsOpenWarningModal}
+        onConfirmDelete={confirmDelete}
+      />
     </div>
   );
 };
