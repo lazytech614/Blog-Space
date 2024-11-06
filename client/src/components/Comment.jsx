@@ -24,10 +24,10 @@ const Comment = ({ commentator, content, date }) => {
       >
         {content}
       </p>
-      <div className="flex gap-2">
+      {/* <div className="flex gap-2">
         <img className="w-[16px] cursor-pointer" src={likeIcon} alt="like" />
         <img className="w-[16px] cursor-pointer" src={dislikeIcon} alt="dislike" />
-      </div>
+      </div> */}
       <div className='w-full h-[1px] bg-gray-300'></div>
     </div>
   );

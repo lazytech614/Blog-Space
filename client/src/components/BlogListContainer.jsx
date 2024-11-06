@@ -20,7 +20,7 @@ const BlogListContainer = () => {
   }, [selectedCategory, blogs])
 
   return (
-    <div className='mt-8 md:mt-10 flex flex-col gap-4 max-w-[90%] mx-auto'>
+    <div className='mt-8 md:mt-10 flex flex-col gap-4 sm:max-w-[90%] mx-auto'>
       <div className='flex justify-center items-center gap-2 md:gap-4'>
         {categories.map((category, index) => (
           <div 
