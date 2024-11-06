@@ -1,18 +1,18 @@
 import React,{useEffect, useState} from 'react'
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
-import toast from 'react-hot-toast'
 import UserTableItem from '../components/userTableItem'
 import { WarningModal } from '../modal/WarningModal'
 import useGetAllUsers from '../hooks/useGetAllUsers'
+import useDeleteUser from '../hooks/useDeleteUser'
 
 const Users = () => {
-    const [isLoading, setIsLoading] = useState(false)
     const [isOpenWarningModal, setIsOpenWarningModal] = useState(false)
     const [selectedUserId, setSelectedUserId] = useState(null)
     
 
-    const {getAllUsers, users, setUsers} = useGetAllUsers()
+    const {getAllUsers, users, setUsers, isLoading: isGetAllUsersLoading} = useGetAllUsers()
+    const {deleteUser, isLoading: isDeleteLoading} = useDeleteUser()
 
     useEffect(() => {
       window.scrollTo(0, 0)
@@ -25,23 +25,7 @@ const Users = () => {
     }
 
     const confirmDelete = async () => {
-      try {
-        setIsLoading(true)
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/delete-user/${selectedUserId}`, 
-          {method: 'DELETE'}
-        ).then((res) => res.json())
-
-        if (response.success) {
-          toast.success(response.message || 'User deleted successfully');
-          setUsers(users.filter((user) => user.id !== selectedUserId));
-        }
-      } catch (error) {
-        console.log(error.message);
-        toast.error(error.message); 
-      }finally{
-        setSelectedUserId(null)
-        setIsLoading(false)
-      }
+      deleteUser(selectedUserId, setSelectedUserId, users, setUsers)
     }
 
   return (

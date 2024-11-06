@@ -24,7 +24,7 @@ const useGetAllUsers = () => {
       setIsLoading(false);
     }
   };
-  return { getAllUsers, users, setUsers };
+  return { getAllUsers, users, setUsers, isLoading };
 };
 
 export default useGetAllUsers;
