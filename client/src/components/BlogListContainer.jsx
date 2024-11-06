@@ -8,7 +8,6 @@ const BlogListContainer = () => {
   const [filteredBlogs, setFilteredBlogs] = useState([])
 
   const { feed } = useFeedContext()
-  // console.log(feed);
   const blogs = feed;
 
   useEffect(() => {
@@ -32,12 +31,18 @@ const BlogListContainer = () => {
           </div>
         ))}
       </div>
-      <div className='grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-2 sm:gap-x-6 gap-y-4 sm:gap-y-8'>
+      <div className='flex flex-col gap-2'>
         {filteredBlogs
           .filter(blog => selectedCategory === "All" || blog.category === selectedCategory)
-          .map((blog, index) => (
-            <BlogCard key={index} {...blog} />
-          ))}
+          .map((blog, index) => {
+            return (
+              <React.Fragment key={index}>
+                <BlogCard {...blog} />
+                <div className='w-full h-[1px] bg-gray-300'></div>
+              </React.Fragment>
+            )
+          }        
+          )}
       </div>
     </div>
   )

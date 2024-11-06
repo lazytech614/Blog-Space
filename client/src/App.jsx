@@ -5,13 +5,16 @@ import Header from './components/Header'
 import BlogDetails from './pages/BlogDetails'
 import Footer from './components/Footer'
 import {Toaster} from 'react-hot-toast'
+import { useAuthContext } from './context/AuthContext'
+import Landing from './pages/Landing'
 
 const App = () => {
+  const { authUser } = useAuthContext()
   return (
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={authUser ? <Home /> : <Landing />} />
         <Route path='/blog-details' element={<BlogDetails />} />
       </Routes>
       <Footer />

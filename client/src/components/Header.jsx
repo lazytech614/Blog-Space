@@ -8,7 +8,6 @@ import Sidebar from './Sidebar'
 import {useNavigate} from 'react-router-dom'
 import { SignInModal } from '../modal/SignInModal'
 import { SignUpModal } from '../modal/SignUpModal'
-import toast from 'react-hot-toast'
 import { useAuthContext } from '../context/AuthContext'
 import useLogOut from '../hooks/useLogOut'
 
@@ -36,7 +35,7 @@ const Header = () => {
     }
 
   return (
-    <nav className='sticky top-0 sm:h-[100px] px-4 sm:px-10 md:px-20 py-6 sm:py-0 bg-slate-100 w-full flex justify-between items-center shadow-[-1px_1px_4px_#000000] z-[10]'>
+    <nav className='sticky top-0 sm:h-[100px] px-4 sm:px-10 md:px-20 py-6 sm:py-0 bg-[#F7F4ED] w-full flex justify-between items-center shadow-[-1px_1px_4px_#000000] z-[10]'>
        <div onClick={() => navigate("/")} className='text-[24px] sm:text-[32px] font-bold cursor-pointer flex justify-center items-center gap-2'>
             <img className='w-6 sm:w-8 md:w-10' src="https://img.icons8.com/?size=200&id=OENhm99NTnV6&format=png" alt="" />
             <span>Blog Space</span>

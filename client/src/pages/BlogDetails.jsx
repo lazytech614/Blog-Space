@@ -13,10 +13,11 @@ import useAddComment from '../hooks/useAddComment';
 import useFetchComments from '../hooks/useFetchComments';
 import useCheckReaction from '../hooks/useCheckReaction';
 import { useAuthContext } from '../context/AuthContext';
+import getFormattedDate from '../utils/getFormattedDate';
 
 const BlogDetails = () => {
   const location = useLocation();
-  const { id, title, category, post, image } = location.state || {};
+  const { id, title, category, post, image, created_at } = location.state || {};
   const [commentContent, setCommentContent] = useState("");
   const [comments, setComments] = useState([]);
   const cleanHtml = DOMPurify.sanitize(post);
@@ -53,8 +54,8 @@ const BlogDetails = () => {
   }, [likesCount, dislikesCount, commentsCount]);
 
   return (
-    <div className='min-h-[calc(100vh-200px)] px-4 sm:px-10 md:px-20 py-6 lg:py-0 flex justify-center items-center'>
-      <div className='bg-slate-100 w-full max-w-[1200px] p-4 rounded-md flex flex-col lg:flex-row justify-center items-start gap-y-4'>
+    <div className='min-h-[calc(100vh-200px)] px-4 sm:px-10 md:px-20 py-6 lg:py-0 flex justify-center items-center bg-[#F7F4ED]'>
+      <div className='bg-slate-100 w-full max-w-[1200px] p-4 rounded-md flex flex-col lg:flex-row justify-center items-start gap-y-4 shadow-[-1px_1px_2px_rgba(0,0,0,0.25)] border border-black'>
         <div className='relative h-[70vh] w-full lg:w-[60%] bg-slate-200 p-4 rounded-md'>
           <h1 className='text-2xl font-bold'>{title}</h1>
           <h2 className='text-sm'>{category}</h2>
@@ -82,7 +83,7 @@ const BlogDetails = () => {
               <img className='w-full h-full' src="https://i.pinimg.com/originals/df/5f/5b/df5f5b1b174a2b4b6026cc6c8f9395c1.jpg" alt="User Avatar" />
             </div>
             <h3 className='text-xl font-semibold'>Rupanjan De</h3>
-            <p className='text-sm'>20th July, 2022</p>
+            <p className='text-sm'>{getFormattedDate(created_at)}</p>
           </div>
           <div className='w-full h-[1px] bg-black'></div>
           <form onSubmit={handleCommentClick} className='w-full h-[40px] border border-black rounded-3xl flex justify-between items-center px-2'>
