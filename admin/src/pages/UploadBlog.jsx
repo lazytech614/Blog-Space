@@ -5,6 +5,7 @@ import uploadIcon from '/upload-icon.png'
 import toast from 'react-hot-toast'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import useUploadBlog from '../hooks/useUploadBlog'
 
 const UploadBlog = () => {
     const [thumbnail, setThumbnail] = useState(null)
@@ -14,6 +15,8 @@ const UploadBlog = () => {
         category: "Technology", // Set default category to "Technology"
         thumbnail: ""
     })
+
+    const {uploadBlog, isLoading: isUploadLoading} = useUploadBlog()
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -49,30 +52,7 @@ const UploadBlog = () => {
         if (thumbnail) {
             data.append('thumbnail', thumbnail); // Ensure the file is added
         }
-    
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/upload-blog`, {
-                method: "POST",
-                body: data, // Use FormData as the body
-            }).then((res) => res.json());
-            
-            // const result = await response.json();
-            if (response.success) {
-                toast.success(response.message || "Blog uploaded successfully"); // Adjust this based on your server's response
-                setThumbnail(null);
-                setFormData({
-                    title: "",
-                    post: "",
-                    category: "Technology",
-                    thumbnail: ""
-                });
-            } else {
-                toast.error(response.message || "Failed to upload blog");
-            }
-        } catch (err) {
-            console.error(err.message);
-            toast.error(err.message || "An error occurred during upload");
-        }
+        uploadBlog(data, setThumbnail, setFormData)
     };
     
     return (
