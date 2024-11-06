@@ -28,7 +28,7 @@ const useGetAllSubscribers = () => {
       setIsLoading(false);
     }
   };
-  return { getAllSubscribers, isLoading, subscribers };
+  return { getAllSubscribers, isLoading, subscribers, setSubscribers };
 };
 
 export default useGetAllSubscribers;
