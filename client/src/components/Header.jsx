@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import loginImage from "/login-box-line.svg"
 import logoutImage from "/logout-box-r-line.svg"
 import arrowRightImage from "/arrow-right-double-fill.svg"
@@ -10,17 +10,24 @@ import { SignInModal } from '../modal/SignInModal'
 import { SignUpModal } from '../modal/SignUpModal'
 import { useAuthContext } from '../context/AuthContext'
 import useLogOut from '../hooks/useLogOut'
+import { useSearchContext } from '../context/SearchContext'
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isOpenSignInModal, setIsOpenSignInModal] = useState(false)
     const [isOpenSignUpModal, setIsOpenSignUpModal] = useState(false)
-    // const [isLoading, setIsLoading] = useState(false)
+    const [searchTerm, setSearchTerm] = useState("")
 
     const {authUser} = useAuthContext()
     const {logOut, isLoading} = useLogOut()
+    const {setSearchQuery} = useSearchContext()
 
     const navigate = useNavigate()
+
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value);
+        setSearchQuery(e.target.value); // Update the search term in the context
+    };
 
     const handleSignInClick = () => {
         setIsOpenSignInModal(true)
@@ -39,6 +46,18 @@ const Header = () => {
        <div onClick={() => navigate("/")} className='text-[24px] sm:text-[32px] font-bold cursor-pointer flex justify-center items-center gap-2'>
             <img className='w-6 sm:w-8 md:w-10' src="https://img.icons8.com/?size=200&id=OENhm99NTnV6&format=png" alt="" />
             <span>Blog Space</span>
+            <div className='w-[300px] h-[40px] rounded-full overflow-hidden bg-white flex justify-between items-center text-[16px] font-normal'>
+                <input 
+                    type="text" 
+                    name='search'
+                    value={searchTerm} // Bind the input value to searchTerm
+                    onChange={handleSearchChange} // Handle changes
+                    placeholder='Search for blog posts...'
+                    className='w-[80%] h-full px-4 outline-none'/>
+                <div className='flex justify-center items-center h-full w-[20%]'>
+                    <img src={arrowRightImage} alt="search" className='w-6' />
+                </div>
+            </div>
        </div> 
        {authUser ? (
         <div className='hidden sm:flex gap-10'>

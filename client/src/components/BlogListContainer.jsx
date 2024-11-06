@@ -2,21 +2,35 @@ import React, { useState, useEffect } from 'react'
 import { categories } from '../constants/categories'
 import BlogCard from './BlogCard'
 import { useFeedContext } from '../context/BlogContext'
+import { useSearchContext } from '../context/SearchContext'
 
 const BlogListContainer = () => {
   const [selectedCategory, setSelectedCategory] = useState("All")
   const [filteredBlogs, setFilteredBlogs] = useState([])
 
   const { feed } = useFeedContext()
+  const { searchQuery } = useSearchContext()
   const blogs = feed;
 
   useEffect(() => {
-    if(selectedCategory === "All") {
-      setFilteredBlogs(blogs)
-    } else {
-      setFilteredBlogs(blogs.filter((blog) => blog.category.toLocaleLowerCase() === selectedCategory.toLocaleLowerCase()))
+    let filtered = blogs;
+
+    if (selectedCategory !== "All") {
+      filtered = blogs.filter((blog) => blog.category.toLowerCase() === selectedCategory.toLowerCase());
     }
-  }, [selectedCategory, blogs])
+
+    if (searchQuery) {
+      filtered = filtered.filter((blog) => {
+        const title = blog.title || ''; // Default to empty string if undefined
+        const description = blog.description || ''; // Default to empty string if undefined
+
+        return title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+               description.toLowerCase().includes(searchQuery.toLowerCase());
+      });
+    }
+
+    setFilteredBlogs(filtered);
+  }, [selectedCategory, blogs, searchQuery]);
 
   return (
     <div className='mt-8 md:mt-10 flex flex-col gap-4 sm:max-w-[90%] mx-auto'>

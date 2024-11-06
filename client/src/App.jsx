@@ -7,19 +7,22 @@ import Footer from './components/Footer'
 import {Toaster} from 'react-hot-toast'
 import { useAuthContext } from './context/AuthContext'
 import Landing from './pages/Landing'
+import { SearchProvider } from './context/SearchContext'
 
 const App = () => {
   const { authUser } = useAuthContext()
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={authUser ? <Home /> : <Landing />} />
-        <Route path='/blog-details' element={<BlogDetails />} />
-      </Routes>
-      <Footer />
-      <Toaster />
-    </BrowserRouter>
+    <SearchProvider>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={authUser ? <Home /> : <Landing />} />
+          <Route path='/blog-details' element={<BlogDetails />} />
+        </Routes>
+        <Footer />
+        <Toaster />
+      </BrowserRouter>
+    </SearchProvider>
   )
 }
 
