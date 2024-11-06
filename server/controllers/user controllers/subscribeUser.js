@@ -3,6 +3,13 @@ import { client } from "../../db/connection.js";
 export const subscribeUser = async (req, res) => {
   const { username } = req.params;
 
+  if (!username) {
+    return res.status(404).json({
+      success: 0,
+      message: "No username provided",
+    });
+  }
+
   try {
     // Fetch user details
     const userDetails = await client.query(

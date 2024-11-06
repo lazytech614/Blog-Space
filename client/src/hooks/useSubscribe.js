@@ -3,6 +3,11 @@ import { useAuthContext } from "../context/AuthContext";
 
 const useSubscribe = () => {
   const { setIsSubscribed, authUser } = useAuthContext();
+  if (!authUser) {
+    return {
+      subscribe: () => toast.error("Please log in to subscribe"),
+    };
+  }
   const subscribe = async (setFormData) => {
     try {
       const response = await fetch(
