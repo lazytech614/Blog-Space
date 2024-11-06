@@ -4,27 +4,17 @@ import toast from 'react-hot-toast'
 import Navbar from '../components/Navbar'
 import BlogTableItem from '../components/BlogTableItem'
 import { WarningModal } from '../modal/WarningModal'
+import useGetAllBlogs from '../hooks/useGetAllBlogs'
 
 const BlogList = () => {
-  const [blogList, setBlogList] = useState([])
+  
   const [selectedBlogId, setSelectedBlogId] = useState(null)
   const [isOpenWarningModal, setIsOpenWarningModal] = useState(false)
 
+  const {getAllBlogs, blogList, setBlogList} = useGetAllBlogs()
+
   useEffect(() => {
-    try {
-      const fetchBlogs = async () => {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/blogs/all-blogs`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }).then((res) => res.json());
-        setBlogList(response.data);
-      };
-      fetchBlogs()
-    } catch (error) {
-      toast.error("Failed to fetch blogs");
-    }
+    getAllBlogs()
   }, [])
 
   // Define the delete handler function
