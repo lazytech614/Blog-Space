@@ -10,7 +10,7 @@ export const checkReaction = async (req, res) => {
     if (result.rows.length > 0) {
       res.status(200).json({
         success: 1,
-        status: result.rows[0].is_like,
+        status: result.rows[0].is_like ? "like" : "dislike",
         message: "Reaction retrieved successfully",
       });
     } else {

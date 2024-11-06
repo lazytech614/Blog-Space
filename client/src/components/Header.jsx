@@ -10,14 +10,16 @@ import { SignInModal } from '../modal/SignInModal'
 import { SignUpModal } from '../modal/SignUpModal'
 import toast from 'react-hot-toast'
 import { useAuthContext } from '../context/AuthContext'
+import useLogOut from '../hooks/useLogOut'
 
 const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isOpenSignInModal, setIsOpenSignInModal] = useState(false)
     const [isOpenSignUpModal, setIsOpenSignUpModal] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
+    // const [isLoading, setIsLoading] = useState(false)
 
-    const {authUser, setAuthUser} = useAuthContext()
+    const {authUser} = useAuthContext()
+    const {logOut, isLoading} = useLogOut()
 
     const navigate = useNavigate()
 
@@ -30,26 +32,7 @@ const Header = () => {
     }
 
     const handleLogOutClick = async() => {
-        try{
-            setIsLoading(true)
-            const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: 'include'
-            })
-            if(response.ok) {
-                localStorage.removeItem("userDetails")
-                setAuthUser(null)
-                toast.success("Logged out successfully!");
-            }
-        }catch(err){
-            console.log(err.message);
-            toast.error(err.message);
-        }finally{
-            setIsLoading(false)
-        }
+        logOut()
     }
 
   return (

@@ -7,8 +7,12 @@ const useAddComment = () => {
   const userId =
     JSON.parse(localStorage.getItem("userDetails"))?.userId || null;
   if (!userId) {
-    toast.error("Please login to add a comment");
-    return;
+    return {
+      addComment: () => toast.error("Please login to add a comment"),
+      isLoading,
+      commentsCount,
+      setCommentsCount,
+    };
   }
   const addComment = async (id, content, setCommentContent, fetchComments) => {
     if (!content) {

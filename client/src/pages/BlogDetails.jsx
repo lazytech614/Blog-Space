@@ -12,6 +12,7 @@ import useFetchEngagements from '../hooks/useFetchEngagements';
 import useAddComment from '../hooks/useAddComment';
 import useFetchComments from '../hooks/useFetchComments';
 import useCheckReaction from '../hooks/useCheckReaction';
+import { useAuthContext } from '../context/AuthContext';
 
 const BlogDetails = () => {
   const location = useLocation();
@@ -33,8 +34,6 @@ const BlogDetails = () => {
 
   const handleReactClick = async (isLike) => {
     await react(status,isLike, id)
-    // checkReaction(id)
-    // fetchEngagementCounts();
   };
 
   const handleCommentClick = async (e) => {
@@ -67,12 +66,12 @@ const BlogDetails = () => {
             <div className='w-full h-[1px] bg-black my-4'></div>
             <div className='flex items-start gap-3'>
               <div>
-                <img onClick={() => handleReactClick(true)} className='w-[30px] cursor-pointer' src={status === true ? likeIconFill : likeIcon} alt="like" />
-                {/* <span className='text-xs'>{likesCount} likes</span> */}
+                <img onClick={() => handleReactClick(true)} className='w-[30px] cursor-pointer' src={status !== "none" ? status === "like" ? likeIconFill : likeIcon : likeIcon} alt="like" />
+                <span className='text-xs'>{likesCount} likes</span>
               </div>
               <div>
-                <img onClick={() => handleReactClick(false)} className='w-[30px] cursor-pointer' src={status === false ? dislikeIconFill : dislikeIcon} alt="dislike" />
-                {/* <span className='text-xs'>{dislikesCount} dislikes</span> */}
+                <img onClick={() => handleReactClick(false)} className='w-[30px] cursor-pointer' src={status !== "none" ? status === "dislike" ? dislikeIconFill : dislikeIcon : dislikeIcon} alt="dislike" />
+                <span className='text-xs'>{dislikesCount} dislikes</span>
               </div>
             </div>
           </div>

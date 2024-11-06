@@ -7,6 +7,7 @@ import dislikeIconFill from "/thumb-down-fill.svg"
 import DOMPurify from 'dompurify';
 import toast from 'react-hot-toast'
 import useCheckReaction from '../hooks/useCheckReaction'
+import { useAuthContext } from '../context/AuthContext'
 
 const BlogCard = ({ id,title, category, post, image }) => {
   const [likesCount, setLikesCount] = useState(0);
@@ -15,7 +16,8 @@ const BlogCard = ({ id,title, category, post, image }) => {
   const cleanHtml = DOMPurify.sanitize(post);
 
   const {status, checkReaction} = useCheckReaction(id)
-  
+  const {authUser} = useAuthContext()
+
   const handleReadMore = () => {
     navigate('/blog-details', {
       state: { id,title, category, post, image },
@@ -74,7 +76,10 @@ const BlogCard = ({ id,title, category, post, image }) => {
   };
 
   useEffect(() => {
-    checkReaction(id)
+    if (authUser) {
+      checkReaction(id);
+    }
+    // console.log(status);
     fetchEngagementCounts(id)
   }, [])
 
@@ -99,11 +104,11 @@ const BlogCard = ({ id,title, category, post, image }) => {
         <div className='flex justify-between items-center'>
           <div className='flex justify-center items-center gap-3'>
             <div className='flex gap-1'>
-              <img onClick={() => handleReactClick(true)} className='w-[20px] cursor-pointer' src={status !== "none" ? status ? likeIconFill : likeIcon : likeIcon} alt="" /> 
+              <img onClick={() => handleReactClick(true)} className='w-[20px] cursor-pointer' src={status !== "none" ? status === "like" ? likeIconFill : likeIcon : likeIcon} alt="" /> 
               {/* <span className='text-[12px] text-gray-400'>{likesCount}</span> */}
             </div>
             <div className='flex gap-1'>
-              <img onClick={() => handleReactClick(false)} className='w-[20px] cursor-pointer' src={status !== "none" ? !status ? dislikeIconFill : dislikeIcon : dislikeIcon} alt="" />
+              <img onClick={() => handleReactClick(false)} className='w-[20px] cursor-pointer' src={status !== "none" ? status === "dislike" ? dislikeIconFill : dislikeIcon : dislikeIcon} alt="" />
               {/* <span className='text-[12px] text-gray-400'>{dislikesCount}</span> */}
             </div>
           </div>

@@ -2,8 +2,9 @@ import { useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 
 const useCheckReaction = () => {
+  const [status, setStatus] = useState("");
   const { authUser } = useAuthContext();
-  const [status, setStatus] = useState(null);
+
   const checkReaction = async (postId) => {
     try {
       const response = await fetch(

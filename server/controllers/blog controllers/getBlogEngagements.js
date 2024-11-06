@@ -6,17 +6,26 @@ export const getBlogEngagement = async (req, res) => {
   try {
     const query = `
       SELECT 
-        blogs.id,
-        blogs.title,
-        blogs.post,
-        COUNT(CASE WHEN likes_dislikes.is_like = true THEN 1 END) AS like_count,
-        COUNT(CASE WHEN likes_dislikes.is_like = false THEN 1 END) AS dislike_count,
-        COUNT(comments.comment_id) AS comment_count
-      FROM blogs
-      LEFT JOIN likes_dislikes ON blogs.id = likes_dislikes.post_id
-      LEFT JOIN comments ON blogs.id = comments.post_id
-      WHERE blogs.id = $1
-      GROUP BY blogs.id;
+    blogs.id,
+    blogs.title,
+    blogs.post,
+    COALESCE(like_data.like_count, 0) AS like_count,
+    COALESCE(like_data.dislike_count, 0) AS dislike_count,
+    COALESCE(comment_data.comment_count, 0) AS comment_count
+  FROM blogs
+  LEFT JOIN (
+    SELECT post_id,
+           SUM(CASE WHEN is_like = true THEN 1 ELSE 0 END) AS like_count,
+           SUM(CASE WHEN is_like = false THEN 1 ELSE 0 END) AS dislike_count
+    FROM likes_dislikes
+    GROUP BY post_id
+  ) AS like_data ON blogs.id = like_data.post_id
+  LEFT JOIN (
+    SELECT post_id, COUNT(comment_id) AS comment_count
+    FROM comments
+    GROUP BY post_id
+  ) AS comment_data ON blogs.id = comment_data.post_id
+  WHERE blogs.id = $1;
     `;
 
     const result = await client.query(query, [blogId]);
