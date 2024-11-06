@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../components/Sidebar'
-import toast from 'react-hot-toast'
 import Navbar from '../components/Navbar'
 import BlogTableItem from '../components/BlogTableItem'
 import { WarningModal } from '../modal/WarningModal'

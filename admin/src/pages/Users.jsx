@@ -4,37 +4,19 @@ import Navbar from '../components/Navbar'
 import toast from 'react-hot-toast'
 import UserTableItem from '../components/userTableItem'
 import { WarningModal } from '../modal/WarningModal'
+import useGetAllUsers from '../hooks/useGetAllUsers'
 
 const Users = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [isOpenWarningModal, setIsOpenWarningModal] = useState(false)
     const [selectedUserId, setSelectedUserId] = useState(null)
-    const [users, setUsers] = useState([])
+    
+
+    const {getAllUsers, users, setUsers} = useGetAllUsers()
 
     useEffect(() => {
       window.scrollTo(0, 0)
-      
-      try{
-        setIsLoading(true)
-
-        const fetchUsers = async () => {
-          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/users`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-          }).then((res) => res.json())
-
-          setUsers(response.users)
-        }
-
-        fetchUsers()
-      }catch(err){
-        console.log(err.message);
-        toast.error(err.message);
-      }finally{
-        setIsLoading(false)
-      }
+      getAllUsers()
     }, [])
 
     const handleDelete = async (id) => {
