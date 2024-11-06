@@ -3,9 +3,12 @@ import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
 import toast from 'react-hot-toast'
 import UserTableItem from '../components/userTableItem'
+import { WarningModal } from '../modal/WarningModal'
 
 const Users = () => {
     const [isLoading, setIsLoading] = useState(false)
+    const [isOpenWarningModal, setIsOpenWarningModal] = useState(false)
+    const [selectedUserId, setSelectedUserId] = useState(null)
     const [users, setUsers] = useState([])
 
     useEffect(() => {
@@ -35,20 +38,26 @@ const Users = () => {
     }, [])
 
     const handleDelete = async (id) => {
+      setSelectedUserId(id)
+      setIsOpenWarningModal(true)
+    }
+
+    const confirmDelete = async () => {
       try {
         setIsLoading(true)
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/delete-user/${id}`, 
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/user/delete-user/${selectedUserId}`, 
           {method: 'DELETE'}
         ).then((res) => res.json())
 
         if (response.success) {
           toast.success(response.message || 'User deleted successfully');
-          setUsers(users.filter((user) => user.id !== id));
+          setUsers(users.filter((user) => user.id !== selectedUserId));
         }
       } catch (error) {
         console.log(error.message);
         toast.error(error.message); 
       }finally{
+        setSelectedUserId(null)
         setIsLoading(false)
       }
     }
@@ -77,6 +86,12 @@ const Users = () => {
           </div>
         </div>
       </div>
+      <WarningModal
+        warning="Are you sure you want to delete this user?"
+        isOpenWarningModal={isOpenWarningModal}
+        setIsOpenWarningModal={setIsOpenWarningModal}
+        onConfirmDelete={confirmDelete}
+      />
     </div>
   )
 }
