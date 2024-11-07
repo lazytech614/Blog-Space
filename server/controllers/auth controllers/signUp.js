@@ -6,6 +6,12 @@ import generateTokenAndSetCookie from "../../utils/generateToken.js";
 export const signUp = async (req, res) => {
   const { name, username, email, password, confirmPassword } = req.body;
 
+  if (!name || !username || !email || !password || !confirmPassword)
+    return res.status(400).json({
+      success: 0,
+      message: "Please fill all the inputs",
+    });
+
   if (password !== confirmPassword)
     return res
       .status(400)
@@ -35,13 +41,11 @@ export const signUp = async (req, res) => {
 
     if (newUser) {
       generateTokenAndSetCookie(newUser.id, newUser.username, res);
-      res
-        .status(201)
-        .json({
-          message: "New user created successfully",
-          userId: newUser.id,
-          success: 1,
-        });
+      res.status(201).json({
+        message: "New user created successfully",
+        userId: newUser.id,
+        success: 1,
+      });
     } else {
       res.status(400).json({ message: "Invalid data", success: 0 });
     }
