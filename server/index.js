@@ -40,6 +40,9 @@ app.get("/", (req, res) => {
   res.send("Hello from server!");
 });
 
+// Connect to the database
+connectToDb();
+
 // Auth routes
 app.use("/api/auth", authRoutes);
 
@@ -53,6 +56,3 @@ app.use("/api/user", userRoutes);
 app.listen(port, () =>
   console.log(`Server running on http://localhost:${port}`)
 );
-
-// Connect to the database
-connectToDb();
